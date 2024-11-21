@@ -32,7 +32,7 @@
 |:------:|:------:|:------:|:------:|:------:|
 | <img src="https://github.com/user-attachments/assets/c1c2b1e3-656d-4712-98ab-a15e91efa2da" alt="이수연" width="150"> | <img src="https://github.com/user-attachments/assets/78ec4937-81bb-4637-975d-631eb3c4601e" alt="이시연" width="150"> | <img src="https://avatars.githubusercontent.com/u/70886438?v=4" alt="유기민" width="150"> | <img src="https://github.com/user-attachments/assets/beea8c64-19de-4d91-955f-ed24b813a638" alt="조다은" width="150"> | <img src="https://avatars.githubusercontent.com/u/70886438?s=400&u=f0a3d1d4ac1cf0e1e531ddc648e6d2bcc4e3d418&v=4" alt="김태우" width="150"> |
 | PL | FE | FE | FE | FE |
-| [GitHub](https://github.com/LDK1009) | [GitHub](https://github.com/SinYusi) | [GitHub](https://github.com/nay3on) | [GitHub](https://github.com/conconcc) | [GitHub](https://github.com/su-9woo) |
+| [GitHub](https://github.com/) | [GitHub](https://github.com/) | [GitHub](https://github.com/) | [GitHub](https://github.com/) | [GitHub](https://github.com/su-9woo) |
 
 ---
 
