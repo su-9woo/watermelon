@@ -1,0 +1,29 @@
+<header>
+    <a href="/index"><div id="logo"><img src="/images/12.png" width="150" height="60"/></div></a>
+
+    <div class="search">
+        <input type="search" id="searchInput" placeholder="노래 검색" />
+        <button id="search" onclick="performSearchResult()">
+            <img src="https://img.icons8.com/?size=30&id=TQPOC8XaUqZ0&format=png&color=ffc0cb" alt="검색 아이콘" />
+        </button>
+    </div>
+
+    <!-- 모달창 -->
+    <div id="modal" style="display:none;">
+        <div id="modalContent">
+            <div id="searchResult">
+                <span id="closeModal" onclick="closeModal()">X</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="memberBtn">
+        <button id="join" value="회원가입">Join</button>
+        <button id="login" value="로그인">Login</button>
+        <button id="board" style="display: none;" value="게시판">Board</button>
+        <button id="view" style="display: none;" value="회원정보"><img src="https://img.icons8.com/?size=30&id=fJ7hcfUGpKG7&format=png&color=ffffff"></button>
+        <button id="logout" style="display: none;" value="로그아웃">Logout</button>
+        <input type="hidden" id="userId" th:value="${session.loginId}">
+    </div>
+
+</header>

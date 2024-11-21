@@ -1,0 +1,129 @@
+.sidebar {
+    position: fixed;
+    left: -250px;
+    top: 80px; /* Start the sidebar below the header */
+    width: 250px;
+    height: calc(100% - 50px); /* Adjust height to account for header height */
+    background-color: #121212;
+    padding: 20px;
+    transition: left 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1; /* Sidebar below header */
+
+    /* Overflow 설정으로 스크롤 추가 */
+    overflow-y: scroll; /* 스크롤 생기도록 설정 */
+}
+
+/* 스크롤바를 숨기기 위한 스타일 */
+.sidebar::-webkit-scrollbar {
+    display: none; /* 기본 스크롤바 숨기기 */
+}
+
+.r-sidebar-toggle {
+    position: fixed;
+    left: 8px;
+    top: 100px;
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 3; /* Ensure the toggle button is on top */
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+/* Sidebar Header */
+.s-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    font-size: 20px;
+    color: white;
+}
+
+.s-header-icon {
+    margin-right: 10px;
+}
+
+.s-header-title {
+    font-weight: bold;
+}
+
+/* Tabs */
+.s-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color : #fff;
+
+
+}
+
+.s-tab {
+    background-color: #333333;
+    border: 1px solid #fff;
+    padding: 5px 10px;
+    border-radius: 30px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* Search Bar */
+.s-search {
+    background-color: #333333;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+/* Playlists */
+.s-playlists {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.s-playlist {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.s-playlist img {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.s-playlist-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.s-playlist-title {
+    font-size: 14px;
+    color: white;
+    margin-bottom: 3px;
+}
+
+.s-playlist-subtitle {
+    font-size: 12px;
+    color: #b3b3b3;
+}
+
+.bneLcE{
+    width: 30px;
+    fill: #fff;
+    margin-right: 10px;
+}

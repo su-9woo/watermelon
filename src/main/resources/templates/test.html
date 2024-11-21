@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>아티스트 정보</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const imgUrl = 'https://cdnimg.melon.co.kr/cm2/artistcrop/images/009/95/171/995171_20241018104103_500.jpg?7056b1f81befbd0811c21e0626b97635/melon/resize/416/quality/80/optimize';
+
+            // 이미지를 다운로드하고 로컬에 저장
+            const img = new Image();
+            img.crossOrigin = "anonymous"; // CORS 설정
+            img.src = imgUrl;
+
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                context.drawImage(img, 0, 0, img.width, img.height);
+
+                try {
+                    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                    const data = imageData.data;
+                    let r = 0, g = 0, b = 0;
+                    for (let i = 0; i < data.length; i += 4) {
+                        r += data[i];
+                        g += data[i + 1];
+                        b += data[i + 2];
+                    }
+
+                    r = Math.round(r / (data.length / 4));
+                    g = Math.round(g / (data.length / 4));
+                    b = Math.round(b / (data.length / 4));
+
+                    document.querySelector('.a-header').style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+                } catch (e) {
+                    console.error('이미지 데이터 접근 중 오류가 발생했습니다:', e);
+                }
+            };
+
+            img.onerror = function() {
+                console.error('이미지를 로드하는 중에 오류가 발생했습니다.');
+            };
+
+            document.body.appendChild(img); // 이미지를 페이지에 추가 (테스트용)
+        });
+    </script>
+</head>
+<body>
+<div class="a-header">헤더 내용</div>
+<table>
+    <thead>
+    <tr>
+        <th>항목</th>
+        <th>내용</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>아티스트 아이디</td>
+        <td th:text="${artist.ArtistId}"></td>
+    </tr>
+    <tr>
+        <td>아티스트 이름</td>
+        <td th:text="${artist.ArtistName}"></td>
+    </tr>
+    <tr>
+        <td>데뷔일</td>
+        <td th:text="${artist.ArtistDate}"></td>
+    </tr>
+    <tr>
+        <td>소속사</td>
+        <td th:text="${artist.ArtistAgency}"></td>
+    </tr>
+    <tr>
+        <td>아티스트 프로필</td>
+        <td>
+            <img class="a-img" th:src="${artist.ArtistProfileName}" th:alt="${artist.ArtistName}" width="100" height="100">
+        </td>
+    </tr>
+    <tr>
+        <td>아티스트 타입</td>
+        <td th:text="${artist.ArtistType}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

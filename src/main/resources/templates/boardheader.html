@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Header</title>
+</head>
+<body>
+<div th:fragment="boardheader">
+  <header>
+    <img src="/images/12.png" width="150" height="60" alt="홈 로고" id="index"/>
+
+    <div class="search-container">
+      <!-- 게시글 검색 -->
+      <select id="category">
+        <option value="BWriter">작성자</option>
+        <option value="BTitle">제목</option>
+        <option value="BContent">내용</option>
+      </select>
+      <input type="text" id="keyword" placeholder="검색어를 입력하세요" />
+      <button id="searchBtn">검색</button>
+      <!-- 게시글 갯수 변경 -->
+      <select id="limit">
+        <option value="5">5개씩</option>
+        <option value="10">10개씩</option>
+        <option value="20">20개씩</option>
+      </select>
+    </div>
+
+    <nav>
+      <ul class="menu1">
+        <li th:if="${session.loginId eq null}"><a href="#" id="join">회원가입</a></li>
+        <li th:if="${session.loginId eq null}"><a href="#" id="login">로그인</a></li>
+        <li th:if="${session.loginId ne null}"><a href="#" id="blist">게시글목록</a></li>
+        <li th:if="${session.loginId ne null}"><a href="#" id="write">게시글작성</a></li>
+        <li th:if="${session.loginId ne null}"><a href="#" id="logout">로그아웃</a></li>
+        <li th:if="${session.loginId ne null}">
+          <img src="https://img.icons8.com/?size=30&id=fJ7hcfUGpKG7&format=png&color=ffffff" alt="내정보 보기" id="mview"/>
+        </li>
+        <input type="hidden" id="userId" th:value="${session.loginId}">
+      </ul>
+    </nav>
+
+    <div id="myModal" class="modal" style="display: none;">
+      <table>
+        <thead>
+        <!-- 테이블 헤더 내용 -->
+        </thead>
+        <tbody id="searchResults">
+        <!-- 검색 결과가 여기에 삽입됩니다. -->
+        </tbody>
+      </table>
+      <div id="numbering"></div>
+    </div>
+  </header>
+</div>
+</body>
+</html>

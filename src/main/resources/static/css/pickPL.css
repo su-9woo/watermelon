@@ -1,0 +1,104 @@
+#pickPL{
+    display: flex;
+    overflow-x: auto;   /* 수평 스크롤 활성화 */
+    white-space: nowrap; /* 아이템들이 한 줄로 배치되도록 설정 */
+}
+
+#pickPL::-webkit-scrollbar {
+    display: none; /* 스크롤바 숨기기 */
+}
+
+.p-playlist-container {
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+    flex-shrink: 0; /* 아이템들이 축소되지 않도록 설정 */
+}
+
+.p-playlist-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 250px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.p-playlist-card:hover {
+    transform: translateY(-5px);
+}
+
+.p-playlist-cover {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.p-playlist-info {
+    padding: 10px;
+}
+
+.p-playlist-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+
+    /* 텍스트가 넘치면 ... 으로 표시 */
+    overflow: hidden;         /* 넘친 텍스트를 숨김 */
+    text-overflow: ellipsis;  /* 넘친 텍스트를 ...으로 표시 */
+    white-space: nowrap;      /* 텍스트가 여러 줄로 넘어가지 않도록 설정 */
+
+    /* 텍스트 너비를 약 8글자 정도로 제한 */
+    max-width: 20ch;           /* 8글자 정도의 너비로 제한 */
+}
+
+.p-playlist-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #666;
+}
+
+.p-playlist-details span {
+    margin-right: 5px;
+}
+
+/* 테이블 스타일 */
+.po-table {
+    width: 100%;
+    border-collapse: collapse;  /* 셀 간의 경계선이 합쳐져서 보이도록 */
+    table-layout: fixed;        /* 셀 너비를 고정하여 내용이 일정하게 배치되도록 */
+}
+
+/* 테이블 셀 스타일 */
+.po-td {
+    padding: 8px;  /* 셀 안쪽 여백 */
+    text-align: left;  /* 텍스트 왼쪽 정렬 */
+    vertical-align: middle;  /* 수직 정렬 */
+    word-wrap: break-word;  /* 긴 단어는 줄 바꿈 처리 */
+    white-space: nowrap;  /* 텍스트가 한 줄에 나올 수 있도록 */
+    overflow: hidden;  /* 넘치는 텍스트는 숨기기 */
+    text-overflow: ellipsis;  /* 텍스트가 넘치면 '...'로 표시 */
+}
+
+/* 링크 스타일 */
+.po-link {
+    text-decoration: none;
+    color: #5bb872;  /* 링크 색상 */
+}
+
+.po-link:hover {
+    text-decoration: underline;
+}
+
+.po-tt{
+    max-width: 70px; /* 원하는 최대 너비 (예: 100px) */
+    white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
+    overflow: hidden; /* 텍스트가 넘칠 때 보이지 않도록 설정 */
+    text-overflow: ellipsis; /* 넘치는 텍스트를 "..."으로 처리 */
+}

@@ -1,0 +1,60 @@
+
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="shortcut icon" href="favicon/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/boardheader.css">
+    <link rel="stylesheet" href="/css/blist.css">
+    <link rel="stylesheet" href="/css/boardchart.css">
+    <title>Watermelon 게시판 목록</title>
+</head>
+
+<body>
+
+
+<div th:replace="boardheader :: boardheader"></div>
+<div id="buttons" style="margin-top : 150px"> <!-- 버튼 추가 -->
+    <button id="freeBtn">자유</button>
+    <button id="artistRecommendBtn">아티스트 추천</button>
+    <button id="playlistRecommendBtn">노래 추천</button>
+    <button id="BHitBtn">조회수</button>
+    <button id="trendingBtn">화제</button>
+
+</div>
+<div id="chart1">
+    <div id="test" class="chart-container" style="margin-left: 1200px;"></div>
+</div>
+<div th:replace="~{footer.html}"></div>
+
+</body>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="/js/footer.js"></script>
+<script src="/js/boardheader.js"></script>
+<script src="/js/MusicList.js"></script>
+<script src="/js/mlist.js"></script>
+
+<script>
+
+    $('#myModal').show();
+
+
+
+
+</script>
+
+
+
+</html>
+
+
+
+
+
+

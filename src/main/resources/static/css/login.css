@@ -1,0 +1,106 @@
+/* 전체 페이지 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom right, #3c9d51 0%, #c2f3d0 80%);
+    /* 대각선 : 초록색(#3c9d51)에서 연두색(#c2f3d0)으로 그라데이션 */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-size: 100% 100%; /* 그라데이션을 정확히 페이지 크기만큼 적용 */
+}
+
+/* 로그인 폼 */
+form {
+    background: radial-gradient(farthest-corner, #f09995 10%, #ff6f6f 75%); /* 사각형 느낌의 방사형 그라데이션 */
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    color: white;display: flex;
+    flex-direction: column; /* 세로 방향으로 자식 요소들 정렬 */
+    align-items: stretch;   /* 자식 요소들이 부모의 너비에 맞게 늘어나도록 설정 */
+
+}
+
+/* 필드셋 스타일 */
+fieldset {
+    border: 2px solid rgb(100, 64, 35); /* 수박 껍질의 초록색 */
+    border-radius: 10px;
+    padding: 20px;
+    background: #F09995; /* 과육 색상 */
+}
+
+legend {
+    font-size: 1.2em;
+    color: #ffffff;
+    padding: 0 10px;
+    border: 2px solid rgb(100, 64, 35);
+    background-color: #3c9d51; /* 껍질 초록색 */
+    border-radius: 5px;
+}
+
+/* 라벨 및 입력 필드 스타일 */
+label {
+    font-size: 1em;
+    margin-bottom: 10px;
+    display: block;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px 0; /* 입력 필드 사이의 간격을 설정 */
+    border: 1px solid #593813; /* 초록색 테두리 */
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box; /* padding과 border 포함해서 width 계산 */
+}
+
+/* 로그인 버튼 스타일 */
+input[type="submit"] {
+    background-color: #5BB872; /* 수박 껍질의 초록색 */
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 1.2em;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #3c9d51; /* 조금 더 짙은 초록색 */
+}
+
+/* 배경에 수박 씨를 추가한 디자인 */
+/*body::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, #ff4d4d 10%, transparent 10%), radial-gradient(circle, #ff4d4d 10%, transparent 10%);
+    background-size: 50px 50px;
+    background-position: 0 0, 25px 25px;
+    transform: translate(-50%, -50%) rotate(45deg);
+    pointer-events: none;
+    opacity: 0.2;
+}*/
+
+/* 작은 디바이스에서 로그인 폼 크기 조정 */
+@media (max-width: 480px) {
+    form {
+        width: 80%;
+    }
+
+    input[type="submit"] {
+        font-size: 1em;
+        padding: 10px;
+    }
+}

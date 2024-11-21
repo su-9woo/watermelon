@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/css/chart.css">
+  <link rel="stylesheet" type="text/css" href="/css/header.css"/>
+  <link rel="stylesheet" type="text/css" href="/css/footer.css"/>
+  <link rel="stylesheet" type="text/css" href="/css/sidebar.css"/>
+  <link rel="stylesheet" type="text/css" href="/css/content.css"/>
+  <link rel="stylesheet" type="text/css" href="/css/top.css"/>
+  <link rel="stylesheet" type="text/css" href="/css/infoModal.css"/>
+  <link rel="stylesheet" type="text/css" href="/css/listeningHistory.css"/>
+  <link rel="stylesheet" type="text/css" href="/css/w-footer.css"/>
+
+  <title>R&B Top30</title>
+
+  <style>
+    .a-header {
+      background-color: #FFA7A7;
+    }
+
+    .a-playlist-info {
+      font-size: 12px;
+      color: #000;
+    }
+  </style>
+</head>
+
+<body>
+<!-- 헤더 -->
+<div th:replace="~{header.html}"></div>
+<br/><br/><br/>
+
+<aside id="aside" style="display:none;">
+  <div class="sidebar" id="sidebar">
+    <!-- Sidebar Header -->
+    <div class="s-header">
+      <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 24 24" class="Svg-sc-ytk21e-0 bneLcE"><path d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6.464a1 1 0 0 0-.5-.866l-6-3.464zM9 2a1 1 0 0 0-1 1v18a1 1 0 1 0 2 0V3a1 1 0 0 0-1-1z"></path></svg>
+      <div class="s-header-title">내 라이브러리</div>
+    </div>
+    <!-- Tabs -->
+    <div class="s-tabs">
+      <a id="playlistForm"><div class="s-tab">플레이리스트</div></a>
+      <div class="s-tab">아티스트</div>
+    </div>
+
+    <!-- Playlists -->
+    <div class="s-playlists" id="playList">
+    </div>
+  </div>
+  <button class="r-sidebar-toggle" onclick="toggleSidebar()">☰</button>
+</aside>
+
+<div class="a-header">
+  <img class="a-igm" src="/img/알앤비이미지.png" alt="Top 50 South Korea">
+  <div class="a-header-content">
+    <h1>Top 30 - R&B</h1>
+    <p>현재 가장 많이 재생된 트랙의 일일 업데이트 - R&B.</p>
+    <div class="a-playlist-info">
+      <span>저장 횟수: 6974 • 약  2분 • 새로운 항목 199개</span>
+    </div>
+  </div>
+</div>
+<section class="a-top-section">
+  <div>
+    <div id="test"></div>
+  </div>
+</section>
+
+<br/><br/><br/><br/><br/><br/><br/><br/>
+
+<section style=" width: 100%;">
+  <div style="margin-top: 100px;">
+    <div class="w-footer">
+      <div class="w-footer-container">
+        <!-- 회사 섹션 -->
+        <div class="w-footer-section">
+          <h3>회사</h3>
+          <ul>
+            <li><a href="#">상세정보</a></li>
+            <li><a href="#">채용 정보</a></li>
+            <li><a href="#">For the Record</a></li>
+          </ul>
+        </div>
+
+        <!-- 커뮤니티 섹션 -->
+        <div class="w-footer-section">
+          <h3>커뮤니티</h3>
+          <ul>
+            <li><a href="#">아티스트</a></li>
+            <li><a href="#">개발자</a></li>
+            <li><a href="#">광고</a></li>
+            <li><a href="#">투자자</a></li>
+            <li><a href="#">공급업체</a></li>
+          </ul>
+        </div>
+
+        <!-- 유용한 링크 섹션 -->
+        <div class="w-footer-section">
+          <h3>유용한 링크</h3>
+          <ul>
+            <li><a href="#">지원</a></li>
+            <li><a href="#">무료 모바일 앱</a></li>
+          </ul>
+        </div>
+
+        <!-- 요금제 섹션 -->
+        <div class="w-footer-section">
+          <h3>워터멜론 요금제</h3>
+          <ul>
+            <li><a href="#">Premium 개인</a></li>
+            <li><a href="#">Premium 듀오</a></li>
+          </ul>
+        </div>
+
+        <!-- SNS 아이콘 섹션 -->
+        <div class="w-footer-section">
+          <div class="w-footer-icons">
+            <!-- 페이스북 SVG 아이콘 -->
+            <a href="https://facebook.com" target="_blank" aria-label="Facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M22 12C22 6.477 17.523 2 12 2S2 6.477 2 12c0 5.004 3.657 9.166 8.438 10.034v-7.07h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.242 0-1.63.771-1.63 1.562V12h2.773l-.443 2.964h-2.33v7.07C18.343 21.166 22 17.004 22 12z"/>
+              </svg>
+            </a>
+            <!-- 트위터 SVG 아이콘 -->
+            <a href="https://twitter.com" target="_blank" aria-label="Twitter">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M24 4.557a9.93 9.93 0 0 1-2.828.775A4.932 4.932 0 0 0 23.337 3a9.864 9.864 0 0 1-3.127 1.195A4.916 4.916 0 0 0 16.616 3c-2.73 0-4.932 2.202-4.932 4.932 0 .386.043.762.127 1.124C7.691 8.865 4.066 6.885 1.64 3.904a4.822 4.822 0 0 0-.666 2.475c0 1.708.87 3.215 2.188 4.099a4.904 4.904 0 0 1-2.24-.616v.062c0 2.385 1.693 4.374 3.946 4.827a4.935 4.935 0 0 1-2.232.085 4.928 4.928 0 0 0 4.604 3.417A9.867 9.867 0 0 1 0 19.54a13.945 13.945 0 0 0 7.548 2.212c9.058 0 14.01-7.513 14.01-14.01 0-.213-.005-.425-.014-.636A10.012 10.012 0 0 0 24 4.557z"/>
+              </svg>
+            </a>
+            <!-- 인스타그램 SVG 아이콘 -->
+            <a href="https://instagram.com" target="_blank" aria-label="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.206.056 2.003.246 2.466.415a4.92 4.92 0 0 1 1.675 1.09 4.92 4.92 0 0 1 1.09 1.675c.169.463.359 1.26.415 2.466.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.056 1.206-.246 2.003-.415 2.466a4.92 4.92 0 0 1-1.09 1.675 4.92 4.92 0 0 1-1.675 1.09c-.463.169-1.26.359-2.466.415-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.206-.056-2.003-.246-2.466-.415a4.92 4.92 0 0 1-1.675-1.09 4.92 4.92 0 0 1-1.09-1.675c-.169-.463-.359-1.26-.415-2.466C2.175 15.747 2.163 15.367 2.163 12s.012-3.584.07-4.85c.056-1.206.246-2.003.415-2.466a4.92 4.92 0 0 1 1.09-1.675 4.92 4.92 0 0 1 1.675-1.09c.463-.169 1.26-.359 2.466-.415C8.416 2.175 8.796 2.163 12 2.163m0-2.163C8.741 0 8.332.013 7.052.072 5.78.131 4.702.308 3.85.668a7.07 7.07 0 0 0-2.56 1.67A7.07 7.07 0 0 0 .668 4.89C.308 5.742.131 6.82.072 8.092.013 9.372 0 9.781 0 12c0 2.219.013 2.628.072 3.908.059 1.272.236 2.35.596 3.202.36.852.838 1.63 1.67 2.56a7.07 7.07 0 0 0 2.56 1.67c.852.36 1.93.537 3.202.596C8.332 23.987 8.741 24 12 24s3.668-.013 4.948-.072c1.272-.059 2.35-.236 3.202-.596a7.07 7.07 0 0 0 2.56-1.67 7.07 7.07 0 0 0 1.67-2.56c.36-.852.537-1.93.596-3.202.059-1.28.072-1.689.072-3.908s-.013-2.628-.072-3.908c-.059-1.272-.236-2.35-.596-3.202a7.07 7.07 0 0 0-1.67-2.56 7.07 7.07 0 0 0-2.56-1.67c-.852-.36-1.93-.537-3.202-.596C15.668.013 15.259 0 12 0z"/>
+                <path d="M12 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/>
+                <circle cx="18.406" cy="5.594" r="1.44"/>
+              </svg>
+            </a>
+            <!-- 추가적인 SNS 아이콘들을 여기에 추가 가능 -->
+          </div>
+        </div>
+      </div>
+
+      <!-- 하단 정보 -->
+      <div class="w-footer-bottom">
+        <div>
+          <a href="#">법률 정보</a> |
+          <a href="#">안전 및 개인정보 보호 센터</a> |
+          <a href="#">개인정보 처리방침</a> |
+          <a href="#">광고 상세정보</a> |
+          <a href="#">접근성</a>
+        </div>
+        <p>© 2024 워터멜론 AB</p>
+        <p>워터멜론 AB, Regeringsgatan 19, 111 53 Stockholm, Sweden | 대표: 다니엘 에크 | 사업자등록번호:
+          556703-7485 (스웨덴) | 통신판매업 신고번호: 2024-공정-0007 (사업자정보) | 고객지원문의: +82 1533 6552 및
+          support@watermelon.com | 호스팅서비스제공자: Google LLC</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 모달창 : 사용자가 플레이한 노래 목록이 표시될 공간 -->
+<div class="modal1">
+  <div class="modal_form">
+    <div class="modal_title">♪ Recently Played ♪</div>
+    <button id="modal_close"><img src="/img/x.png" width="10" height="10"></button>
+    <div class="modal_body">
+      <!-- 여기에 사용자가 플레이한 노래 목록을 삽입할 예정 -->
+      <div id="listening-history"></div>
+    </div>
+    <button id="clear-history-btn">전체 삭제</button>
+  </div>
+</div>
+
+<!-- 모달 1: 곡 정보 -->
+<div id="modal-music" class="modal">
+  <span class="modal-close">X</span>
+  <div class="modal-content">
+    <img class="album-cover" src="" width="60"/>
+    <h4 class="m-title"></h4>
+    <div class="artist-name"></div>
+    <div class="music-album"></div>
+    <div class="music-releaseDate"></div>
+    <div class="music-genre"></div>
+    <div class="music-like"></div>
+  </div>
+</div>
+
+<!-- 모달 2: 아티스트 정보 -->
+<div id="modal-artist" class="modal">
+  <span class="modal-close">X</span>
+  <div class="modal-content">
+    <img class="artist-img" src="" width="60"/>
+    <div class="artist-name"></div>
+    <div class="artist-date"></div>
+    <div class="artist-agency"></div>
+    <div class="artist-type"></div>
+  </div>
+</div>
+
+
+<div class="modal-overlay"></div>
+
+<!-- 푸터 -->
+<div th:replace="~{footer.html}"></div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+<script src="/js/header.js"></script>
+<script src="/js/footer.js"></script>
+<script src="/js/sidebar.js"></script>
+<script src="/js/PlayList.js"></script>
+<script src="/js/musicPlay.js"></script>
+<script src="/js/modal_ygm.js"></script>
+<script src="/js/mlist.js"></script>
+
+<script>
+  let category = "R&B";
+
+  $(document).ready(() => {
+    $.ajax({
+      type: "POST",
+      url: "/top50",
+      data: {category: category},
+      dataType: "json",
+      success: function (result) {
+        console.log(result);
+        musicList(result);
+      },
+      error: function (e) {
+        console.log("리스트 가져오기 실패", e);
+        alert('리스트 가져오기 실패');
+      }
+    });
+  });
+
+</script>
+
+</html>

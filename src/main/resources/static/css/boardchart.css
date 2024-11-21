@@ -1,0 +1,110 @@
+/* 차트 박스를 담을 컨테이너 */
+.chart-container {
+    width: 30%; /* 너비 100% */
+    height: 400px; /* 5개씩 보일 수 있도록 높이 설정 (필요에 따라 조정) */
+    overflow-y: hidden; /* 기본적으로 스크롤 숨기기 */
+    overflow-x: hidden; /* 가로 스크롤 숨기기 */
+    position: relative;
+    scroll-behavior: smooth; /* 부드러운 스크롤 효과 */
+    padding-right: 10px; /* 스크롤바 너비 고려해 여백 추가 */
+
+    color: white;
+}
+
+.chart-container:hover {
+    overflow-y: auto; /* hover 시 스크롤바 활성화 */
+}
+
+.chart-container::-webkit-scrollbar { width: 0px; /* 스크롤바의 너비를 0으로 설정 */ background: transparent; /* 스크롤바 배경을 투명하게 설정 */ }
+.chart-container::-webkit-scrollbar-thumb { background: transparent; /* 스크롤바 핸들을 투명하게 설정 */ }
+
+/* 차트 박스 스타일 유지 */
+.chartBox {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    font-family: Arial, sans-serif;
+}
+
+/* 차트 박스마다 스타일 */
+.rank {
+    width: 5%;
+    text-align: center;
+}
+
+.album-cover {
+    width: 10%;
+    display: flex;
+    justify-content: center;
+}
+
+.song-info {
+    width: 25%;
+    padding-left: 10px;
+}
+
+.song-info .title {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.song-info .artist {
+    color: gray;
+    font-size: 14px;
+}
+
+.album {
+    width: 20%;
+    text-align: center;
+    color: gray;
+    font-size: 14px;
+}
+
+.likes {
+    width: 10%;
+    text-align: center;
+    color: #e77f7f;
+}
+
+.actions {
+    width: 20%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* 버튼에 대한 설명 텍스트 */
+#plusPy::after {
+    content: "플레이리스트 추가!";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    opacity: 0;
+    white-space: nowrap;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+#plusPy:hover::after {
+    opacity: 1;
+}
+
+.playBtn{
+    color: #fff;
+}
+
+#plusPy{
+    color : #fff;
+}

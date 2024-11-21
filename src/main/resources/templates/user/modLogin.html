@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/join.css">
+    <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    <title>로그인 정보 확인</title>
+</head>
+<body>
+<form action="modifyLogin" method="POST" id="modLogin" name="modLogin">
+    <table>
+        <caption>아이디 확인 및 비밀번호 변경</caption>
+        <tr>
+            <th>아이디 :</th>
+            <td><input type="text" id="userId" name="UserId" disabled="true" style="border:transparent" th:value="${session.loginId}"/>
+                <br></td>
+        </tr>
+        <tr id="currentPw">
+            <th>현재 비밀번호 :</th>
+            <td>
+                <input type="password" id="inputCurrentPw" name="CurrentPw"/>
+                <input type="button" id="checkCurrentPw" value="확인"/>
+            </td>
+        </tr>
+        <tr class="newPass">
+            <th>새 비밀번호 :</th>
+            <td>
+                <input type="password" id="newUserPw" name="UserPw"/>
+                <p id="check2"></p>
+            </td>
+        </tr>
+        <tr class="newPass">
+            <th>새 비밀번호 확인 :</th>
+            <td>
+                <input type="password" id="pwCheck"/>
+                <p id="check3"></p>
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                <input type="button" class="modiLogin" value="비밀번호 변경"/>
+                <input type="button" class="newPass" id="submitModLogin" value="변경사항저장"/>
+            </th>
+        </tr>
+    </table>
+</form>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        const $currentPwSection = $('#currentPw');
+        const $newPassSection = $('.newPass');
+        const $modiLoginButton = $('.modiLogin');
+        const $checkCurrentPwButton = $('#checkCurrentPw');
+        const $inputCurrentPw = $('#inputCurrentPw');
+        const $newUserPw = $('#newUserPw');
+        const $pwCheck = $('#pwCheck');
+        const $check2 = $('#check2');
+        const $check3 = $('#check3');
+        const $submitModLoginButton = $('#submitModLogin');
+
+        // 새 비밀번호 입력 창을 숨긴다
+        $newPassSection.hide();
+        $currentPwSection.hide();
+
+        // '비밀번호 변경' 클릭하면 현재 비밀번호 확인 필드가 뜬다
+        $modiLoginButton.click(function() {
+            $(this).hide();
+            $currentPwSection.show();
+        });
+
+        // enter 키가 클릭으로 인식 되게
+        $inputCurrentPw.keypress(function (e) {
+            let key = e.which;
+            if (key == 13) {
+                $checkCurrentPwButton.click();
+            }
+        });
+
+        $pwCheck.keypress(function (e) {
+            let key = e.which;
+            if (key == 13) {
+                $submitModLoginButton.click();
+            }
+        });
+
+        // 현재 비밀번호 확인
+        $checkCurrentPwButton.click(function() {
+            $.ajax({
+                type: "POST",
+                url: "/checkCurrentPw",
+                data: { "UserPw": $inputCurrentPw.val() },
+                dataType: "text",
+                success: function(result) {
+                    if (result === "OK") {
+                        // 일치하다면 비밀번호 확인 버튼 숨기고
+                        $checkCurrentPwButton.hide();
+                        // 새 비밀번호 입력창을 보여준다
+                        $newPassSection.show();
+                    } else {
+                        alert("비밀번호가 틀렸습니다.");
+                        $inputCurrentPw.focus();
+                    }
+                },
+                error: function() {
+                    alert('checkCurrentPw 통신 실패');
+                }
+            });
+        });
+
+        // 비밀번호 정규화
+        function validatePassword(password) {
+            // regex (Regex OR Regular Expression) :
+            // - JavaScript 포함 여러 프로그래밍 언어에서 제공해주는 도구
+            // - 특정된 문자열 형식을 지정하여 거기에 일치하는 문자열 값을 출력/검색 가능하게 만든다
+
+            const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[~!@#$%^&*])\S{8,16}$/;
+            /*
+                (강사님의 설명 빌려오기)
+                (1) ^: 문자열의 시작을 의미합니다.
+                (2) (?=.*\d): 숫자(\d)가 최소 1개 이상 포함
+                (3) (?=.*[a-z]): 소문자가 최소 1개 이상 포함
+                (4) (?=.*[A-Z]): 대문자가 최소 1개 이상 포함
+                (5) (?=.*[~!@#$%^&*]): 특수문자가 최소 1개 이상 포함
+                (6) [\S]{8,16}: 공백을 포함하지 않는(\S) 8자에서 16자 사이의 문자열
+                (7) $: 문자열의 끝을 의미
+
+                ex) Asdfasdf1!
+             */
+            //if (password.length < 8 || password.length > 16)
+            if (password.length < 4 || password.length > 16) {
+                // valid = 논리형, 유효성 확인
+                return { valid: false, message: '8-16자리 입력해주세요' };
+            }
+            // test() 메소드는 regex와 문자열의 값이 일치하는지 확인한다. 리턴값은 true(참) 혹은 false(거짓)
+            if (/\s/.test(password)) {
+                return { valid: false, message: '공백없이 입력해주세요' };
+            }
+            if (!regex.test(password)) {
+                return { valid: false, message: '숫자, 특수문자, 대소문자를 혼합해서 입력해주세요' };
+            }
+            return { valid: true, message: '사용가능한 비밀번호입니다.' };
+        }
+
+        // 입력된 비밀번호 유효성 확인
+        $newUserPw.keyup(function() {
+            const password = $(this).val();
+            const result = validatePassword(password);
+            $check2.html(result.message).css('color', result.valid ? 'green' : 'red');
+        });
+
+        // 새로운 비밀번호 일치 확인
+        $pwCheck.keyup(function() {
+            const password = $newUserPw.val();
+            const passwordCheck = $(this).val();
+            const result = password === passwordCheck ?
+                { valid: true, message: '비밀번호가 일치합니다' } :
+                { valid: false, message: '비밀번호가 일치하지 않습니다' };
+            $check3.html(result.message).css('color', result.valid ? 'green' : 'red');
+        });
+
+        // 비밀번호 유효하다면 제출
+        $submitModLoginButton.click(function() {
+            $.ajax({
+                type: "POST",
+                url: "/checkNewPw",
+                data: { "UserPw": $newUserPw.val() },
+                dataType: "text",
+                success: function(result) {
+                    if (result === "OK") {
+                        alert("이미 사용하신 비밀번호입니다.");
+                        $newUserPw.focus();
+                    } else {
+                        if ($check3.css('color') === 'red') {
+                            alert('비밀번호 확인 해주세요');
+                            $newUserPw.focus();
+                        } else {
+                            $('#modLogin').submit();
+                        }
+                    }
+                },
+                error: function() {
+                    alert('checkCurrentPw 통신 실패');
+                }
+            });
+        })
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,374 @@
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/css/bview.css">
+
+    <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+
+    <title>Watermelon 게시판</title>
+</head>
+
+<body>
+<div id="modiForm1">
+    <table>
+        <caption>  <img src="/images/12.png" alt="홈 로고" width="150px" height="60px" id="index"/></caption>
+        <tr class="info-row">
+            <td colspan="5" class="info-item">
+                <div class="title-date">
+                    <span> [[${view.BType}]]</span>
+                    <span class="title"> [[${view.BTitle}]]</span>
+                    <div id="dateDisplay"></div> <!-- 날짜를 표시할 요소 -->
+
+
+
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5" class="writer-info">
+                <span class="writer" style= "margin-right: 650px" >작성자: [[${view.BWriter}]]</span>
+
+                <span class="likes">추천수: [[${view.BLike}]]</span>
+                <span class="likes">비추천수: [[${view.BDislike}]]</span>
+                <span class="hits">조회수: [[${view.BHit}]]</span>
+
+            </td>
+        </tr>
+        <tr>
+
+        <tr>
+            <th></th>
+            <td>[[${view.BContent}]]</td>
+        </tr>
+        <tr>
+            <th>노래공유</th>
+            <td>
+                <a th:href="@{|/upload/${view.BFileName}|}">[[${view.BFileName}]]</a>
+            </td>
+
+        </tr>
+        <tr>
+            <th colspan="2">
+                <div th:if="${session.loginId == view.BWriter}">
+                <button id="modify">수정</button>
+                <button id="delete">삭제</button>
+                </div>
+                <div th:if="${session.loginId != view.BWriter}">
+                    <button id="likeButton"><img src="/images/like.jpg" width="40px"/>♥</button>
+                    <span id="lovely">༺♥༻[[${view.BLike}]]༺♥༻</span>
+                    <button id="dislikeButton"><img src="/images/dislike.png" width="40px"/>x</button>
+
+                </div>
+
+            </th>
+        </tr>
+    </table>
+
+    <!-- 댓글 작성 -->
+    <div th:if="${session.loginId ne null}" id="cmtWrite">
+        <textarea rows="3" cols="30" id="CContent" maxlength="15px"></textarea>
+        <button id="writeBtn">댓글 입력</button>
+    </div>
+
+    <!-- 댓글 목록 -->
+    <div id="cmtArea"></div>
+
+</div>
+
+<div id="modiForm2">
+    <h2>게시글 수정 페이지</h2>
+
+    <form action="/bModify" method="post" enctype="multipart/form-data">
+        <table>
+            <tr>
+                <th>게시글 유형</th>
+                <td>
+                    <div class="options" >
+                        <button type="button" class="option" onclick="selectOption('자유')">자유</button>
+                        <button type="button" class="option" onclick="selectOption('아티스트 추천')">아티스트 추천</button>
+                        <button type="button" class="option" onclick="selectOption('플레이리스트/노래 추천')">플레이리스트/노래 추천</button>
+                    </div>
+                    <input type="hidden" name="BType" id="BType" required/>
+                    <div id="selectedOption" class="selected"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <th>제목</th>
+                <td><input type="text" name="BTitle" th:placeholder="${view.BTitle}" maxlength="10"/></td>
+            </tr>
+
+            <tr>
+                <th>내용</th>
+
+                <td>
+                    <label>
+                        <textarea name="BContent" th:placeholder="${view.BContent}" maxlength="100" rows="20" cols="60"></textarea>
+                    </label>
+                </td>
+
+
+
+            </tr>
+
+            <tr>
+                <th>노래공유</th>
+                <td>
+                    <input type="file" id="BFile" name="BFile"/>
+                    <input type="hidden" name="BFileName" th:value="${view.BFileName}"/>
+
+                </td>
+            </tr>
+
+            <tr>
+                <th colspan="2">
+                    <input type="hidden" name="BNum" th:value="${view.BNum}"/>
+                    <input type="hidden" name="BWriter" th:value="${view.BWriter}"/>
+                    <input type="submit" value="수정"/>
+                </th>
+            </tr>
+        </table>
+    </form>
+</div>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+</body>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+<script>
+
+
+    $(() => {
+
+        $('#writeBtn').click(() => {
+            if (confirm('댓글을 입력하시겠습니까?')) {
+                $.ajax({
+                    type: "POST",
+                    url: "/cWrite",
+                    data: {
+                        "CBNum": [[${view.BNum}]],
+                        "CWriter": '[[${session.loginId}]]',
+                        "CContent": $('#CContent').val()
+                    },
+                    dataType: "json",
+                    success: (list) => {
+                        $('#CContent').val(""); // 댓글입력창 초기화
+                        cmtList(list);      // 댓글 목록
+                    },
+                    error: () => {
+                        alert('cWrite 통신 실패!');
+                    }
+                });
+            }
+        });
+
+        $('#modiForm2').hide();
+
+        $('#modify').click(() => {
+            $('#modiForm2').show();
+            $('#modiForm1').hide();
+        });
+
+        $('#delete').click(() => {
+            if (confirm('정말 삭제하시겠습니까?')) {
+                location.href = `/bDelete?bNum=[[${view.BNum}]]&bFileName=[[${view.BFileName}]]`;
+            }
+        });
+
+        $('#BFile').on('change', function (event) {
+            let file = event.target.files[0];
+            let reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#preImage').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(file);
+        });
+
+        function cmtList(list) {
+            let output = "";
+            output +=
+                `<table>
+
+                `;
+
+            for (let i in list) {
+                output +=
+                    `<tr>
+                        <td>작성자:${list[i].cwriter}</td>
+                        <td>${list[i].ccontent}</td>
+                        <td>${list[i].cdate.substring(0, 10)}</td>
+                    `;
+
+                if ('[[${session.loginId}]]' == list[i].cwriter) {
+                    output +=
+                        `
+                        <td>
+                        <button class="cmodify" value="${list[i].cnum}">수정</button>
+                         <button class="cdelete" value="${list[i].cnum}">삭제</button>
+                        </td>
+
+                        `;
+                } else {
+                    output += `<td></td>`;
+                }
+                output += `</tr>`;
+            }
+
+            output += `</table>`;
+
+            $('#cmtArea').html(output);
+
+            // 수정 삭제는 cmtList 함수 안에서 진행
+            $('.cmodify').click((e) => {
+                // console.log("CNum : " + e.target.value);
+                $.ajax({
+                    type: "POST",
+                    url: "/cWrite",
+                    data: {
+                        "CNum": e.target.value,
+                        "CBNum": [[${view.BNum}]],
+                        "CContent": $('#CContent').val(),
+                        "CWriter": `[[${session.loginId}]]`
+                    },
+                    dataType: "json",
+                    success: (list) => {
+                        $('#CContent').val("");
+                        cmtList(list);
+                    },
+                    error: () => {
+                        alert('cModify 통신 실패!');
+                    }
+                });
+            });
+
+            $('.cdelete').click((e) => {
+                if (confirm('댓글을 삭제하시겠습니까?')) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/cDelete",
+                        data: {
+                            "CNum": e.target.value,
+                            "CBNum": [[${view.BNum}]]
+                        },
+                        dataType: "json",
+                        success: (list) => {
+                            cmtList(list);
+                        },
+                        error: () => {
+                            alert('cDelete 통신 실패!');
+                        }
+                    });
+                }
+            });
+
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/cList",
+            data: {"CBNum": [[${view.BNum}]]},
+            dataType: "json",
+            success: (list) => {
+                console.log(list);
+                cmtList(list);
+            },
+            error: () => {
+                alert('cList 통신 실패!');
+            }
+        });
+
+
+    });
+    // 서버에서 전달된 날짜 문자열 (예: "2024-11-12 12:00")
+    const bDateString = '[[${view.BDate}]]'; // JSP에서 날짜 문자열을 가져옴
+
+    // 문자열을 Date 객체로 변환
+    const bDate = new Date(bDateString);
+
+    // 날짜를 원하는 형식으로 포맷하는 함수
+    function formatDate(date) {
+        const options = {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'};
+        return date.toLocaleString('ko-KR', options); // 한국 형식으로 포맷
+    }
+
+    // 포맷된 날짜를 HTML 요소에 삽입
+    document.getElementById('dateDisplay').innerText = formatDate(bDate);
+
+
+    const bNum = [[${view.BNum}]];
+
+    $(document).ready(function () {
+        // 로컬 스토리지에서 추천 및 비추천 상태 확인
+        const hasLiked = localStorage.getItem('liked_' + bNum);
+        const hasDisliked = localStorage.getItem('disliked_' + bNum);
+
+        // 이미 추천한 경우 버튼 비활성화
+        if (hasLiked) {
+            $('#likeButton').prop('disabled', true);
+            $('#dislikeButton').prop('disabled', true);
+        }
+
+        // 이미 비추천한 경우 버튼 비활성화
+        if (hasDisliked) {
+            $('#likeButton').prop('disabled', true);
+            $('#dislikeButton').prop('disabled', true);
+
+        }
+
+        // 추천 버튼 클릭 이벤트
+        $('#likeButton').click(function () {
+            $.ajax({
+
+                url: '/increaseLike/' + bNum,
+                type: 'POST',
+                success: function (data) {
+                    $('#likeCount').text(data); // 추천 수 업데이트
+
+                    localStorage.setItem('liked_' + bNum, true); // 추천 상태 저장
+                    $('#likeButton').prop('disabled', true); // 버튼 비활성화
+                    location.href = location.href;
+                },
+                error: function () {
+                    alert('추천 실패');
+                }
+            });
+        });
+
+        // 비추천 버튼 클릭 이벤트
+        $('#dislikeButton').click(function () {
+            $.ajax({
+                url: '/increaseDislike/' + bNum,
+                type: 'POST',
+                success: function (data) {
+                    $('#dislikeCount').text(data); // 비추천 수 업데이트
+                    localStorage.setItem('disliked_' + bNum, true); // 비추천 상태 저장
+                    $('#dislikeButton').prop('disabled', true); // 버튼 비활성화
+                    location.href = location.href;
+                },
+                error: function () {
+                    alert('비추천 실패');
+
+                }
+            });
+        });
+    });
+</script>
+<script>
+    function selectOption(option) {
+        // 선택된 옵션을 숨겨진 필드에 설정
+        document.getElementById('BType').value = option;
+        // 선택된 옵션을 화면에 표시
+        document.getElementById('selectedOption').textContent = "선택된 옵션: " + option;
+    }
+</script>
+
+</html>
+

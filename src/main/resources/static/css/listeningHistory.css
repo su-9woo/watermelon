@@ -1,0 +1,44 @@
+.a-header {
+    background-color: #e91429;
+}
+
+#listening-history {
+    padding: 5px 0 0 0;
+    margin-top: 10px;
+    height: 600px;
+}
+
+.m-song-cover {
+    position: relative;
+}
+
+.m-song-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden; /* 넘치는 내용을 숨김 */
+    color: #fff;
+}
+
+.m-song-title, .m-song-artist {
+    white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 설정 */
+    overflow: hidden;    /* 넘치는 텍스트는 숨기기 */
+    text-overflow: ellipsis; /* 넘치는 텍스트는 ...으로 표시 */
+    padding: 0; /* 기본 패딩 제거 */
+    margin: 0 0 2px 10px;
+
+}
+.m-song-title {
+    font-size: 15px;
+    font-weight: bolder;
+}
+
+.m-song-artist {
+    font-size: 12px;
+    color: #b3b3b3;
+}
+
+.likeUp {
+    background-color: transparent;
+    color : #fff;
+}

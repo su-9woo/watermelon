@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/css/bwrite.css">
+    <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+
+    <title>게시글작성</title>
+</head>
+
+<body>
+<img src="/images/12.png" alt="홈 로고" width="150px" height="60px" id="index"/>
+
+<form action="/bWrite" method="post" enctype="multipart/form-data">
+    <table>
+        <tr>
+            <th>게시글 유형</th>
+            <td>
+                <div class="options" >
+                    <button type="button" class="option" onclick="selectOption('자유')">자유</button>
+                    <button type="button" class="option" onclick="selectOption('아티스트 추천')">아티스트 추천</button>
+                    <button type="button" class="option" onclick="selectOption('플레이리스트/노래 추천')">플레이리스트/노래 추천</button>
+                </div>
+                <input type="hidden" name="BType" id="BType" required/>
+                <div id="selectedOption" class="selected"></div>
+            </td>
+        </tr>
+        <tr>
+            <th>제목</th>
+            <td><input type="text" name="BTitle" required maxlength="10" /></td>
+        </tr>
+
+        <tr>
+            <th>내용</th>
+            <td>
+                <textarea id="BContent" name="BContent" rows="20" cols="10" required maxlength="50"></textarea>
+            </td>
+        </tr>
+
+        <tr>
+            <th>첨부파일</th>
+            <td>
+                <input type="file" id="BFile" name="BFile" required/>
+                <br/> <img id="preImage" width="150px"/>
+            </td>
+        </tr>
+
+        <tr>
+            <th colspan="2">
+                <input type="hidden" name="BWriter" th:value="${session.loginId}"/>
+                <input type="submit" value="등록"/>
+            </th>
+        </tr>
+    </table>
+</form>
+
+</body>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+
+<script th:if="${session.loginId eq null}">
+    $(() => {
+        alert('로그인 후 사용');
+        location.href = '/uLoginForm';
+    });
+</script>
+
+<script>
+    $('#BFile').on('change', function (event) {
+        let file = event.target.files[0];
+        let reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#preImage').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(file);
+    });
+
+
+
+
+
+
+
+</script>
+
+
+<script>
+    function selectOption(option) {
+        // 선택된 옵션을 숨겨진 필드에 설정
+        document.getElementById('BType').value = option;
+        // 선택된 옵션을 화면에 표시
+        document.getElementById('selectedOption').textContent = "선택된 옵션: " + option;
+    }
+
+    // 페이지 로드 시 초기화
+    window.onload = function() {
+        document.getElementById('BType').value = '';
+        document.getElementById('selectedOption').textContent = '';
+    };
+
+
+    // 페이지 로드가 완료된 후 실행
+    document.addEventListener("DOMContentLoaded", function() {
+        // 아이디가 "index"인 요소에 클릭 이벤트 리스너 추가
+        document.getElementById("index").addEventListener("click", function() {
+            // "index" 페이지로 이동
+            window.location.href = "/index";
+        });
+    });
+</script>
+
+
+
+</html>

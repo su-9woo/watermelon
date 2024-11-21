@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/footer.css">
+  <link rel="stylesheet" href="/css/chart.css">
+  <link rel="stylesheet" type="text/css" href="/css/sidebar.css"/>
+  <link rel="stylesheet" href="/css/PliInfo.css">
+  <link rel="stylesheet" type="text/css" href="/css/listeningHistory.css"/>
+  <link rel="stylesheet" href="/css/infoModal.css">
+
+  <title>플레이리스트</title>
+</head>
+
+<style>
+  #deletePlaylistButton {
+    position: fixed;
+    top: 85px;   /* 상단에서 20px */
+    left: 450px;  /* 왼쪽에서 20px */
+    z-index: 1000; /* 다른 요소들보다 위에 위치하도록 설정 */
+    background-color: transparent;
+    border: none;
+    padding: 0;
+  }
+  #deletePlaylistButton img {
+    width: 20px;
+    height: 30px;
+    cursor: pointer;
+  }
+</style>
+
+<body>
+<!-- 헤더 -->
+<div th:replace="~{header.html}"></div>
+
+<br/><br/><br/><br/><br/>
+
+<aside id="aside" style="display:none;">
+  <div class="sidebar" id="sidebar">
+    <!-- Sidebar Header -->
+    <div class="s-header">
+      <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 24 24" class="Svg-sc-ytk21e-0 bneLcE">
+        <path d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6.464a1 1 0 0 0-.5-.866l-6-3.464zM9 2a1 1 0 0 0-1 1v18a1 1 0 1 0 2 0V3a1 1 0 0 0-1-1z"></path>
+      </svg>
+      <div class="s-header-title">내 라이브러리</div>
+    </div>
+    <!-- Tabs -->
+    <div class="s-tabs">
+      <a id="playlistForm">
+        <div class="s-tab">플레이리스트</div>
+      </a>
+      <div class="s-tab">아티스트</div>
+    </div>
+
+    <!-- Playlists -->
+    <div class="s-playlists" id="playList">
+    </div>
+  </div>
+  <button class="r-sidebar-toggle" onclick="toggleSidebar()">☰</button>
+</aside>
+
+<div class="container">
+  <div class="main-content">
+    <!-- 뒤로가기 -->
+    <button id="backButton">
+      <img src="/img/back.png" style="cursor: pointer; width: 30px;" alt="뒤로가기">
+    </button>
+    <!-- 플리 삭제 -->
+    <button id="deletePlaylistButton">
+      <img src="/img/delete.png" style="cursor: pointer; width: 30px; margin-left: 1000px; margin-top: 40px;" alt="플레이리스트 삭제">
+    </button>
+
+    <table>
+      <tr>
+        <td>이름</td>
+        <td>[[${playlist.PInfoTitle}]]</td>
+      </tr>
+
+      <tr>
+        <td colspan="2">[[${playlist.PInfoOwner}]]</td>
+      </tr>
+
+      <tr>
+        <td>조회수</td>
+        <td>[[${playlist.PInfoHit}]]</td>
+      </tr>
+
+      <tr>
+        <td>생성일</td>
+        <td> [[${#strings.replace(#strings.substring(playlist.PInfoDate, 0, 10), '-', '.')}]]</td>
+      </tr>
+
+      <tr>
+        <td>플리 커버 사진</td>
+        <td>
+          <img th:src="'/upload/' + ${playlist.PInfoCoverName}" width="200px"/>
+        </td>
+      </tr>
+    </table>
+
+    <div id="test"></div>
+  </div>
+</div>
+
+
+<!-- 모달창 : 사용자가 플레이한 노래 목록이 표시될 공간 -->
+<div class="modal1">
+  <div class="modal_form">
+    <div class="modal_title">♪ Recently Played ♪</div>
+    <button id="modal_close"><img src="/img/x.png" width="10" height="10"></button>
+    <div class="modal_body">
+      <!-- 여기에 사용자가 플레이한 노래 목록을 삽입할 예정 -->
+      <div id="listening-history"></div>
+    </div>
+    <button id="clear-history-btn">전체 삭제</button>
+  </div>
+</div>
+
+
+<!-- 모달 1: 곡 정보 -->
+<div id="modal-music" class="modal">
+  <span class="modal-close">X</span>
+  <div class="modal-content">
+    <img class="album-cover" src="" width="100"/>
+    <h4 class="m-title"></h4>
+    <div class="artist-name"></div>
+    <div class="music-album"></div>
+    <div class="music-releaseDate"></div>
+    <div class="music-genre"></div>
+    <div class="music-like"></div>
+  </div>
+</div>
+
+<!-- 모달 2: 아티스트 정보 -->
+<div id="modal-artist" class="modal">
+  <span class="modal-close">X</span>
+  <div class="modal-content">
+    <img class="artist-img" src="" width="100"/>
+    <div class="artist-name"></div>
+    <div class="artist-date"></div>
+    <div class="artist-agency"></div>
+    <div class="artist-type"></div>
+  </div>
+</div>
+
+
+<!-- 푸터 -->
+<div th:replace="~{footer.html}"></div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+<script src="/js/header.js"></script>
+<script src="/js/footer.js"></script>
+<!--<script src="/js/content.js"></script>-->
+<!--<script src="/js/MusicList.js"></script>-->
+<script src="/js/PlayList.js"></script>
+<script src="/js/musicPlay.js"></script>
+<script src="/js/modal_ygm.js"></script>
+<script src="/js/sidebar.js"></script>
+<script src="/js/mlist.js"></script>
+
+
+
+<script>
+
+  $(document).ready(() => {
+    // 페이지 로딩 시 앨범 목록을 요청
+    var pinfoNum = window.location.pathname.split('/').pop();  // URL에서 pinfoNum 추출
+
+    // URL에서 pinfoNum 추출
+    $.ajax({
+      type: "POST",
+      url: "/PlaylistM",
+      data: {pinfoNum: pinfoNum},
+      dataType: "json", // 서버에서 JSON 형식의 데이터를 수신하도록 설정
+      success: function (result) {
+        // $("#test").text(result);
+        console.log(result)
+        musicList(result);
+      },
+      error: function (e) {
+        console.log("앨범 가져오기 실패", e);
+        alert('앨범 가져오기 실패');
+      }
+    });
+
+    // 뒤로가기
+    $('#backButton').click(function() {
+      window.history.back();
+    });
+
+
+    // 플레이리스트 삭제 요청 보내기
+    $('#deletePlaylistButton').click(function() {
+      location.href=`/deletePlaylist/${pinfoNum}`;  // pinfoNum을 전달하여 삭제 요청`
+    });
+  });
+
+  // function musicList(result) {
+  //   let output = "";
+  //   for (let i in result) {
+  //     output += `<div class="chartBox">
+  //                   <div class="rank">
+  //                       <span>${parseInt(i) + 1}</span>
+  //                   </div>
+  //                   <div class="album-cover">
+  //                       <img src="${result[i].malbumCoverName}" width="60" height="60">
+  //                   </div>
+  //                   <div class="song-info">
+  //                       <p class="title">${result[i].mtitle}</p>
+  //                       <a class="artistInfo" data-artist-id="${result[i].artistId}"><p class="artist">${result[i].artistName}</p></a> <!-- 아티스트 이름 출력 -->
+  //                   </div>
+  //                   <div class="album">
+  //                       <p>${result[i].malbum}</p>
+  //                   </div>
+  //                   <div class="likes">
+  //                       <p>❤ ${result[i].mhit}</p>
+  //                   </div>
+  //                   <div class="actions">
+  //                       <button class="play-img" data-playing="false">
+  //                           <img src="/img/play_G.png" width="20px" alt="재생">
+  //                       </button>
+  //                       <button>
+  //                           <img src="/img/updown_G.png" width="20px" alt="위아래 드래그">
+  //                       </button>
+  //                   </div>
+  //               </div>
+  //
+  //               `;
+  //   }
+  //   $("#test").html(output);
+  //
+  //
+  //   // actions 버튼 클릭 이벤트 처리
+  //   $(".play-img").click(function () {
+  //     // 현재 버튼의 상태를 확인
+  //     let isPlaying = $(this).data("playing");
+  //
+  //     if (isPlaying) {
+  //       // 현재 재생 중이면 일시 정지 이미지로 변경
+  //       $(this).find("img").attr("src", "/img/play_G.png");
+  //       $(this).data("playing", false);
+  //     } else {
+  //       // 현재 정지 중이면 재생 이미지로 변경
+  //       $(this).find("img").attr("src", "/img/stop_G.png");
+  //       $(this).data("playing", true);
+  //     }
+  //   });
+  // }
+
+
+</script>
+
+</html>

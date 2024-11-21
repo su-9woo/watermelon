@@ -1,0 +1,9 @@
+#freeBtn,#artistRecommendBtn,#playlistRecommendBtn,#BHitBtn,#trendingBtn{
+    height: 50px;
+    width: 185px;
+}
+
+#buttons {
+    margin-left: 110px;
+
+}

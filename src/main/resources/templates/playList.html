@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist</title>
+    <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    <!--<link rel="stylesheet" href="/css/style.css">-->
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/chart.css">
+    <link rel="stylesheet" type="text/css" href="/css/listeningHistory.css"/>
+
+    <style>
+
+        #searchMusic {
+            border: 1px solid white;  /* 외각선 하얀색 1px */
+            color: white;  /* 텍스트 색 하얀색 */
+            font-size: 14px;  /* 텍스트 크기 14px */
+            padding: 5px;  /* 적당한 패딩 추가 (선택 사항) */
+            background-color: transparent;  /* 배경 투명 */
+        }
+
+        /* 전체 레이아웃 */
+        body {
+
+            background-color: #121212;
+            color: #FFFFFF;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            scrollbar-width: thin; /* 스크롤바 두께 */
+            scrollbar-color: #888 #f1f1f1; /* 스크롤바와 트랙 색상 */
+        }
+
+        /* 컨테이너 박스 */
+        .container {
+            border: 2px solid lightgray;
+            width: 900px;
+            height: 650px;
+            background-color: #181818;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px #5bb872; /* 0은 px 생략가능*/
+        }
+
+        form{
+            display: flex;
+            background-color: #425432;
+        }
+
+        /* 좌측 사이드바 */
+        .sidebar {
+            width: 60%;
+            padding: 20px 20px 20px 20px;
+            align-items: center;
+            background-color: rgba(42, 59, 31, 0.9);
+        }
+
+        .sidebar img {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+        }
+
+        .playlist-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            cursor: pointer;
+        }
+
+        .playlist-item img {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .playlist-item span {
+            font-size: 16px;
+            color: ghostwhite;
+        }
+
+        /* 음악 목록이 넘어가면 스크롤바 생성 */
+        #list {
+            max-height: 600px; /* 최대 높이를 설정 */
+            overflow-y: auto; /* 세로 스크롤바 표시 */
+            padding-right: 10px; /* 스크롤바와 내용 사이의 간격 조절 */
+            border-radius: 10px; /* 트랙의 둥근 모서리 */
+        }
+
+
+        /* 오른쪽 메인 콘텐츠 */
+        .main-content {
+            width: 65%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 커버 이미지 미리보기 */
+        #coverPreview {
+            width: 100px;
+            height: 100px;
+            background-color: rgba(194, 181, 106, 0.8);
+            border-radius: 10px;
+            object-fit: cover; /* 이미지 비율에 맞춰 자르기 */
+            margin-bottom: 20px; /* 하단 여백 */
+            border: 3px solid ghostwhite;
+            display: block; /* 이미지가 안 보이면 숨기기 */
+            /*background-image: url('./default.jpg'); !* 기본 이미지 *!*/
+        }
+
+        /* 플레이리스트 정보 입력 */
+        .playlist-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .playlist-info label {
+            color: #B3B3B3;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .playlist-info input[type="text"],
+        .playlist-info input[type="file"] {
+            padding: 8px;
+            border: 1px solid #3e3e3e;
+            border-radius: 5px;
+            background-color: #121212;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        /* 추천 노래 리스트 */
+        #musicList {
+            flex-grow: 1;
+            overflow-x: hidden; /* 세로 스크롤 숨기기 */
+        }
+
+        .chartBox {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #5e7550;
+        }
+
+        .chartBox img {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+        }
+
+        .song-title {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        /* 음악차트 앨범 정보 크기 */
+        .song-info {
+            flex-grow: 1;
+            margin-left: 10px;
+        }
+
+        .song-info .title {
+            font-weight: bold;
+            color: #FFFFFF;
+        }
+
+        .song-info .artist {
+            font-size: 15px;
+            color: whitesmoke;
+        }
+
+        /* 플레이리스트 앨범 정보 크기 */
+        .song-pinfo {
+            flex-grow: 1;
+            margin-left: 10px;
+            display: flex;
+            flex-direction: column; /* 세로로 정렬 */
+        }
+
+        .song-pinfo .title {
+            font-weight: bold;
+            font-size: 12px;
+            color: #FFFFFF;
+        }
+
+        .song-pinfo .artist {
+            font-size: 8px;
+            color: whitesmoke;
+        }
+
+        /* 플레이어 버튼 */
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .actions button {
+            background-color: transparent; /* 버튼 배경 투명 설정 */
+            border: none; /* 버튼 테두리 제거 */
+            padding: 8px; /* 버튼 영역 확보 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .actions button img {
+            background-color: transparent; /* 배경 투명 설정 */
+            width: 17px;
+            height: 17px;
+            cursor: pointer;
+        }
+
+        /* 목록에서 제거 */
+        .remove-song {
+            background-color: transparent;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .remove-song img {
+            background-color: transparent; /* 배경 투명 설정 */
+            width: 16px !important; /* song-item과 겹쳐서 우선순위 사용*/
+            height: 16px !important;
+            cursor: pointer;
+            margin-left: 10px; /* 이미지와 다른 항목 사이 간격 추가 */
+        }
+
+        /* 앨범 커버 이미지와 제목이 포함된 컨테이너 스타일 */
+        .song-item {
+            display: flex;
+            align-items: center;
+            padding: 2px 10px 15px 10px;
+            margin-bottom: 20px; /* 각 항목 사이 여백 추가 */
+            border-bottom: 1px solid #3e6241;
+        }
+
+        .song-item img {
+            width: 45px; /* 앨범 커버 이미지 크기 */
+            height: 45px;
+            border-radius: 5px; /* 이미지 테두리 둥글게 */
+            margin-right: 15px; /* 이미지와 제목 사이 간격 추가 */
+        }
+
+        /* 마지막 song-item 아래에 구분선 제거 */
+        .song-item:last-child {
+            border-bottom: none;
+        }
+
+        /* 저장 버튼 */
+        .save-button {
+            padding: 5px;
+            background-color: #5bb872;
+            border: none;
+            border-radius: 5px;
+            color: #FFFFFF;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 15%;
+        }
+
+        .save-button:hover {
+            background-color: #3c9d51;
+        }
+
+        #chartTitle {
+            color: #ff6f6f;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .btn-over {
+            background-color: transparent;
+            border: none;
+            outline: none;
+            box-shadow: none;
+            padding: 0;
+            margin: 10px;
+            font-size: 18px;
+            color: #fff;
+            cursor: pointer; /* 클릭 가능한 포인터 */
+            transition: transform 0.1s ease, opacity 0.1s ease; /* 눌리는 효과와 투명도 변화 */
+        }
+
+        .btn-over:hover {
+            opacity: 0.8; /* 마우스 오버 시 투명도를 조금 낮추기 */
+        }
+
+        .btn-over:active {
+            transform: scale(0.95); /* 버튼 클릭 시 크기 축소 */
+        }
+
+        /* 모달의 기본 스타일 */
+        .modal {
+            position: fixed; /* 화면에 고정 */
+            z-index: 1; /* 다른 요소들 위에 올림 */
+            top: 50%; /* 화면 중앙에 위치 */
+            left: 50%; /* 화면 중앙에 위치 */
+            transform: translate(-50%, -50%); /* 중앙 정렬을 위한 변환 */
+            border-radius: 8px; /* 모서리 둥글게 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+            width: 100%;
+            height: 100%;
+            background-color: transparent; /* 반투명 검정 배경 */
+            display: flex; /* 가운데 정렬을 위해 플렉스 사용 */
+            align-items: center; /* 세로 중앙 정렬 */
+            justify-content: center; /* 가로 중앙 정렬 */
+        }
+
+        /* 모달 내용 스타일 */
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 350px;
+            position: relative;
+        }
+
+        /* 닫기 버튼 스타일 */
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 뒤로가기 */
+        #backButton {
+            position: fixed;
+            top: 150px;   /* 상단에서 20px */
+            left: 70px;  /* 왼쪽에서 20px */
+            z-index: 1000; /* 다른 요소들보다 위에 위치하도록 설정 */
+            background-color: transparent;
+            border: none;
+            padding: 0;
+        }
+        #backButton img {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+<!-- 헤더 -->
+<div th:replace="~{header.html}"></div>
+
+
+<div class="container">
+    <form action="/playList" method="POST" enctype="multipart/form-data">
+        <div class="sidebar" id="">
+            <div id="list"></div>
+        </div>
+        <button id="backButton">
+            <img src="/img/back.png" style="cursor: pointer; width: 30px;" alt="뒤로가기">
+        </button>
+
+        <div class="main-content">
+
+            <!-- 플레이리스트 정보 입력 -->
+            <div class="playlist-info">
+                <div style="display: flex; justify-content: center;">
+                    <!-- 커버 이미지 미리보기 -->
+                    <img id="coverPreview" alt="">
+                    <div style="margin-top: 5px;">
+                        <button class="btn-over" onclick="openModal()">☰</button>
+                        <br/>
+                        <span style="paFdding: 10px;">&nbsp;&nbsp;&nbsp;[[${session.loginId}]]</span>
+
+                        <!-- 점과 입력란을 하나의 div로 감싸서 정렬 -->
+                        <div style="display: flex; align-items: center;">
+                            <span class="dot" style="color: #fff; font-size: 24px; margin-right: 10px;">&nbsp;&nbsp;•</span>
+                            <input type="text" id="PInfoTitle" name="PInfoTitle" placeholder="플레이리스트 제목#" required
+                                   style="border: none; font-size: 24px; padding: 7px; height: 40px; background-color: transparent; outline: none; color: #fff; margin: 0;"/>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" id="PInfoOwner" name="PInfoOwner" th:value="${session.loginId}" required/><br/>
+
+                <!-- 모달창 -->
+                <div id="modal-img" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModal()">&times;</span> <!-- 닫기 버튼 -->
+                        <p style="color: #121212; font-size: 18px; font-weight: bold;">플레이리스트 커버</p><br/><br/>
+                        <input type="file" id="PInfoCover" name="PInfoCover" accept="image/*"
+                               onchange="previewCoverImage(event)">
+                    </div>
+                </div>
+            </div>
+            <hr style="width: 100%; border: 1px solid ghostwhite;"/>
+            <div style="width: 100%;">
+                <p style="font-size: 15px; margin-top: 0;">+ 를 눌러 목록에 추가하기</p>
+                <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                    <span id="chartTitle">🔥 Hot 100</span> <!-- 여기 텍스트가 변경될 것입니다 -->
+                    <input type="text" id="searchMusic" placeholder="검색어 입력(타이틀만)">
+                    <button id="searchBtn">검색</button>
+                    <button type="submit" class="save-button">생성</button>
+                </div>
+            </div>
+            <!-- 추천 음악 리스트 -->
+            <div style="max-height: 400px; overflow-y: auto; scrollbar-width: none;">
+                <div id="musicList"></div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- 푸터 -->
+<div th:replace="~{footer.html}"></div>
+
+
+<!-- 모달창 : 사용자가 플레이한 노래 목록이 표시될 공간 -->
+<div class="modal1">
+    <div class="modal_form">
+        <div class="modal_title">♪ Recently Played ♪</div>
+        <button id="modal_close"><img src="/img/x.png" width="10" height="10"></button>
+        <div class="modal_body">
+            <!-- 여기에 사용자가 플레이한 노래 목록을 삽입할 예정 -->
+            <div id="listening-history"></div>
+        </div>
+        <button id="clear-history-btn">전체 삭제</button>
+    </div>
+</div>
+
+</body>
+
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+
+<script src="/js/header.js"></script>
+<script src="/js/footer.js"></script>
+<!--<script src="/js/content.js"></script>-->
+<!--<script src="/js/MusicList.js"></script>-->
+<script src="/js/PlayList.js"></script>
+<script src="/js/musicPlay.js"></script>
+<script src="/js/modal_ygm.js"></script>
+<script src="/js/sidebar.js"></script>
+<script src="/js/mlist.js"></script>
+
+<script>
+    $(document).ready(() => {
+        // 페이지 로딩 시 앨범 목록을 요청
+        $.ajax({
+            type: "POST",
+            url: "/ChartList",
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                musicList(result);
+            },
+            error: function (e) {
+                console.log("앨범 가져오기 실패", e);
+                alert('앨범 가져오기 실패');
+            }
+        });
+
+        // 뒤로가기
+        $('#backButton').click(function() {
+            window.history.back();
+        });
+    });
+
+
+    // Enter 키가 눌렸을 때 searchBtn 클릭 이벤트 실행
+    $('#searchMusic').keydown(function(event) {
+        // Enter 키가 눌렸을 때
+        if (event.key === 'Enter') {
+            event.preventDefault();  // 폼 제출 방지
+
+            // #searchBtn 클릭 이벤트 강제 실행
+            $('#searchBtn').click();
+        }
+    });
+
+    // #searchBtn 클릭 이벤트
+    $('#searchBtn').click(function(event) {
+        event.preventDefault();  // 기본 폼 제출 방지
+
+        let searchMusic = $('#searchMusic').val();  // 검색어 가져오기
+
+        // AJAX 요청
+        $.ajax({
+            type: "POST",
+            url: "/searchM",
+            data: { "searchMusic": searchMusic },
+            dataType: "json",
+            success: (result) => {
+                console.log(result);
+                musicList(result);  // 결과 처리 함수
+            },
+            error: () => {
+                alert('searchMusic 통신 실패!');
+            }
+        });
+    });
+
+
+    function musicList(result) {
+        let output = "";
+        for (let i in result) {
+            output += `<div class="chartBox">
+                    <img src="${result[i].malbumCoverName}" alt="앨범 커버">
+                    <div class="song-info">
+                        <p class="title">${result[i].mtitle}</p>
+                        <p class="artist">${result[i].artistName}</p>
+                    </div>
+                    <div class="actions">
+                        <button class="play-image" data-playing="false">
+                            <img src="/img/play.png" alt="재생">
+                        </button>
+                        <button class="add-to-playlist"
+                                data-title="${result[i].mtitle}"
+                                data-artist="${result[i].artistName}"
+                                data-mid="${result[i].mid}"
+                                data-album="${result[i].malbumCoverName}"> <!--앨범커버 사진 추가-->
+                            <img src="/img/plus.png" alt="추가">
+                        </button>
+                        <button>
+                            <img src="/img/updown.png" alt="위아래 드래그">
+                        </button>
+                    </div>
+                </div>`;
+        }
+        $("#musicList").html(output);
+
+
+        // 노래 추가 버튼에 클릭 이벤트를 설정
+        $(".add-to-playlist").click(function (event) {
+            event.preventDefault();  // 폼 제출 방지
+
+            const songTitle = $(event.target).data("title");
+            const artistName = $(event.target).data("artist");
+            const album = $(event.target).data("album");
+            const mid = $(event.target).data("mid");  // 클릭된 노래의 mid 값 가져오기
+
+            addToPlaylist(songTitle, artistName, album, mid);  // mid 값도 함께 전달
+        });
+
+        // play-image 버튼 클릭 이벤트 처리
+        $(".play-image").click(function() {
+            // 현재 버튼의 상태를 확인
+            let isPlaying = $(this).data("playing");
+
+            if (isPlaying) {
+                // 현재 재생 중이면 일시 정지 이미지로 변경
+                $(this).find("img").attr("src", "/img/play.png");
+                $(this).data("playing", false);
+            } else {
+                // 현재 정지 중이면 재생 이미지로 변경
+                $(this).find("img").attr("src", "/img/stop.png");
+                $(this).data("playing", true);
+            }
+        });
+    }
+
+    let midArray = []; // 선택된 노래의 mid 값을 저장할 배열
+
+    function addToPlaylist(title, artist, album, mid) {
+        // 이미 추가된 mid인지 확인
+        if (!midArray.includes(mid)) {
+            // 중복되지 않으면 배열에 추가
+            midArray.push(mid);
+
+            // 노래 정보 추가
+            $("#list").append(`
+            <div class="song-item" data-mid="${mid}">
+                <img src="${album}" alt="${title} - ${artist} 앨범 커버" class="album-cover">
+                <div class="song-pinfo">
+                    <span class="song-title">${title}</span>
+                    <span class="song-artist">${artist}</span>
+                </div>
+                <button class="remove-song">
+                    <img src="/img/x.png" alt="삭제">
+                </button>
+            </div>
+        `);
+
+            // 숨겨진 input에 새로운 mid 값을 추가
+            $("#list").append(`<input type="hidden" name="mid[]" value="${mid}">`);
+
+            // 삭제 버튼 기능 추가
+            $(".remove-song").last().on("click", function () {
+                const songItem = $(this).parent();
+                const songMid = songItem.data("mid");
+
+                // 삭제할 노래의 mid 값을 배열에서 제거
+                midArray = midArray.filter(id => id !== songMid);
+
+                // HTML 요소 삭제
+                songItem.remove();
+
+                // 해당 hidden input도 삭제
+                $(`input[name='mid[]'][value='${songMid}']`).remove();
+            });
+        }
+    }
+
+
+    // 커버 이미지 미리보기
+    function previewCoverImage(event) {
+        const file = event.target.files[0];  // 사용자가 업로드한 파일
+        const preview = document.getElementById('coverPreview');  // 이미지 미리보기 요소
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                preview.src = e.target.result;  // 업로드한 파일로 미리보기 업데이트
+                preview.classList.remove('default');  // 기본 이미지 클래스를 제거
+                preview.style.display = 'block';  // 이미지 보이도록 설정
+            };
+
+            reader.readAsDataURL(file);  // 파일을 읽어들여 미리보기 이미지로 설정
+        } else {
+            preview.src = 'default.jpg';  // 파일이 없다면 기본 이미지로 되돌리기
+            preview.classList.add('default');  // 기본 이미지 클래스를 추가
+            preview.style.display = 'block';  // 이미지가 보이도록 설정
+        }
+    }
+
+    // searchMusic 입력란에 이벤트 리스너 추가
+    document.getElementById('searchMusic').addEventListener('keydown', function (event) {
+        // 엔터 키가 눌렸을 때
+        if (event.key === 'Enter') {
+            event.preventDefault();  // 폼 제출을 막음
+            const searchValue = event.target.value;  // 입력된 텍스트 값
+            if (searchValue.trim() !== '') {  // 빈 값이 아니면
+                document.getElementById('chartTitle').textContent = searchValue;  // 차트 제목을 입력값으로 변경
+            }
+        }
+    });
+
+    // searchBtn 버튼 클릭 이벤트 리스너 추가
+    document.getElementById('searchBtn').addEventListener('click', function () {
+        const searchValue = document.getElementById('searchMusic').value;  // 입력된 텍스트 값
+        if (searchValue.trim() !== '') {  // 빈 값이 아니면
+            document.getElementById('chartTitle').textContent = searchValue;  // 차트 제목을 입력값으로 변경
+        }
+    });
+
+
+    // 모달 열기 함수
+    function openModal() {
+        document.getElementById("modal-img").style.display = "flex"; // 모달을 보이게 설정
+    }
+
+    // 모달 닫기 함수
+    function closeModal() {
+        document.getElementById("modal-img").style.display = "none"; // 모달을 숨기기
+    }
+
+
+</script>
+
+</html>

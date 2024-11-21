@@ -1,0 +1,217 @@
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #000000;
+    color: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    height: 60px;
+    z-index: 10;
+}
+
+.logo {
+    left: 50px;
+    position: fixed;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 auto;
+}
+
+.search input {
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 3px solid;
+    border-image: linear-gradient(to bottom, #f09995 0%, #5BB872 100%);
+    border-image-slice: 1;
+    width: 500px;
+    height: 45px;
+    background: none;
+    color: white;
+}
+
+.search button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.search input:focus {
+    outline: none;
+}
+
+.search input::placeholder {
+    color: white;
+}
+
+#searchMusic {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#searchMusic img {
+    width: 45px;
+    height: 45px;
+}
+
+.memberBtn {
+    display: flex;
+    align-items: center; /* 버튼을 수직 가운데 정렬 */
+    gap: 10px; /* 버튼 간의 간격 */
+    margin-right: 50px;
+}
+
+#join:active, #login:active, #view:active, #logout:active, #board:active {
+    transform: scale(0.96);
+}
+
+#join:before, #login:before, #view:before, #logout:before, #board:before,
+#join:after, #login:after, #view:after, #logout:after, #board:after {
+    position: absolute;
+    content: "";
+    width: 150%;
+    left: 50%;
+    height: 100%;
+    transform: translateX(-50%);
+    z-index: -1000;
+    background-repeat: no-repeat;
+}
+
+#join:hover:before, #login:hover:before, #view:hover:before, #logout:hover:before, #board:hover:before {
+    top: -70%;
+    background-image: radial-gradient(circle, #f09995 20%, transparent 20%),
+    radial-gradient(circle, transparent 20%, #f09995 20%, transparent 30%),
+    radial-gradient(circle, #f09995 20%, transparent 20%),
+    radial-gradient(circle, #f09995 20%, transparent 20%),
+    radial-gradient(circle, transparent 10%, #f09995 15%, transparent 20%),
+    radial-gradient(circle, #f09995 20%, transparent 20%),
+    radial-gradient(circle, #f09995 20%, transparent 20%),
+    radial-gradient(circle, #f09995 20%, transparent 20%),
+    radial-gradient(circle, #f09995 20%, transparent 20%);
+    background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%,
+    10% 10%, 18% 18%;
+    background-position: 50% 120%;
+    animation: greentopBubbles 0.9s ease;
+}
+
+@keyframes greentopBubbles {
+    0% {
+        background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%,
+        40% 90%, 55% 90%, 70% 90%;
+    }
+
+    50% {
+        background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%,
+        50% 50%, 65% 20%, 90% 30%;
+    }
+
+    100% {
+        background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%,
+        50% 40%, 65% 10%, 90% 20%;
+        background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    }
+}
+
+#join:hover::after, #login:hover::after, #view:hover::after, #logout:hover::after, #board:hover::after {
+    bottom: -70%;
+    background-image: radial-gradient(circle, #f09995 20%, transparent 20%),
+    radial-gradient(circle, #f09995 20%, transparent 20%),
+    radial-gradient(circle, transparent 10%, #f09995 15%, transparent 20%),
+    radial-gradient(circle, #f09995 20%, transparent 20%),
+    radial-gradient(circle, #f09995 20%, transparent 20%),
+    radial-gradient(circle, #f09995 20%, transparent 20%),
+    radial-gradient(circle, #f09995 20%, transparent 20%);
+    background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
+    background-position: 50% 0%;
+    animation: greenbottomBubbles 0.9s ease;
+}
+
+@keyframes greenbottomBubbles {
+    0% {
+        background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%,
+        70% -10%, 70% 0%;
+    }
+
+    50% {
+        background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%,
+        105% 0%;
+    }
+
+    100% {
+        background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%,
+        110% 10%;
+        background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    }
+}
+
+#join, #login, #view, #logout, #board {
+    border-radius: 15px;
+    font-size: 15px;
+    color: white;
+    width: 70px;
+    height: 50px;
+    margin: 0;
+    position: relative;
+    /*padding: 5px 20px;*/
+    border: none;
+    cursor: pointer;
+    background-color: #f09995;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+
+/* 모달 스타일 */
+#modal {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+    overflow: auto; /* 모달 안에서 스크롤 가능하도록 */
+}
+
+/* 모달 내용 */
+#modalContent {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    color: black;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* 그림자 효과 */
+}
+
+/* 닫기 버튼 */
+#closeModal {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+#closeModal:hover,
+#closeModal:focus {
+    color: black;
+    cursor: pointer;
+}
+
+.album-cover, .artist-cover {
+    margin: auto;
+    text-align: center;
+}

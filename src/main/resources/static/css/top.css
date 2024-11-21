@@ -1,0 +1,134 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #000000;
+    padding: 50px;
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    min-height: 100vh; /* 화면의 최소 높이를 100vh로 설정 */
+    flex-direction: column; /* 위 아래로 쌓이게 설정 */
+}
+
+.a-top-section {
+    font-family: Arial, sans-serif;
+    color: white;
+    background-color: #121212;
+    margin: 0;
+    padding: 0;
+    width: 70%;
+    border-radius: 0 0 15px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.a-header {
+    display: flex;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    color: white;
+    padding: 20px;
+    background-color: #e91429;
+    width: 70%;
+    border-radius: 15px 15px 0 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.a-header img {
+    width: 150px;
+    height: 150px;
+    margin-right: 20px;
+}
+
+.a-header-content h1 {
+    font-size: 32px;
+    margin: 0;
+}
+
+.a-header-content p {
+    font-size: 14px;
+    margin: 4px 0 10px;
+}
+
+.a-playlist-info {
+    font-size: 12px;
+    color: #b3b3b3;
+}
+
+p{
+    margin: 2px;
+}
+
+#test {
+    padding: 20px;
+}
+
+.chartBox {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #282828;
+}
+
+.rank span {
+    width: 30px;
+    text-align: center;
+    color: #b3b3b3;
+}
+
+.album-cover img {
+    border-radius: 5px;
+    margin: 0 15px;
+}
+
+.song-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.song-info .title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.song-info .artist {
+    font-size: 14px;
+    color: #b3b3b3;
+}
+
+.album, .likes {
+    width: 200px;
+    font-size: 14px;
+    color: #b3b3b3;
+    text-align: center;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+.actions button {
+    background: none;
+    border: none;
+    color: #b3b3b3;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.actions button:hover {
+    color: white;
+}
+
+.playBtn {
+    font-size: 18px;
+    color: #1db954;
+}
+
+.likes p {
+    color: #e77f7f;
+    font-size: 14px;
+}

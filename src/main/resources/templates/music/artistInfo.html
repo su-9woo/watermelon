@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/css/chart.css">
+    <link rel="stylesheet" type="text/css" href="/css/header.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/footer.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/sidebar.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/content.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/top.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/infoModal.css"/>
+
+    <title>아티스트 소개</title>
+
+    <style>
+
+
+        #listening-history {
+            padding: 5px;
+            margin-top: 10px;
+            height: 600px;
+        }
+
+        .m-song-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden; /* 넘치는 내용을 숨김 */
+            color: #fff;
+        }
+
+        .m-song-title, .m-song-artist {
+            white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 설정 */
+            overflow: hidden;    /* 넘치는 텍스트는 숨기기 */
+            text-overflow: ellipsis; /* 넘치는 텍스트는 ...으로 표시 */
+            margin: 0;  /* 기본 마진 제거 */
+            padding: 0; /* 기본 패딩 제거 */
+
+        }
+
+        .likeUp {
+            background-color: transparent;
+            color : #fff;
+        }
+
+
+
+    </style>
+</head>
+
+<body>
+<!-- 헤더 -->
+<div th:replace="~{header.html}"></div>
+<br/><br/><br/>
+
+<aside id="aside" style="display:none;">
+    <div class="sidebar" id="sidebar">
+        <!-- Sidebar Header -->
+        <div class="s-header">
+            <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 24 24" class="Svg-sc-ytk21e-0 bneLcE"><path d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6.464a1 1 0 0 0-.5-.866l-6-3.464zM9 2a1 1 0 0 0-1 1v18a1 1 0 1 0 2 0V3a1 1 0 0 0-1-1z"></path></svg>
+            <div class="s-header-title">내 라이브러리</div>
+        </div>
+        <!-- Tabs -->
+        <div class="s-tabs">
+            <a id="playlistForm"><div class="s-tab">플레이리스트</div></a>
+            <div class="s-tab">아티스트</div>
+        </div>
+
+        <!-- Playlists -->
+        <div class="s-playlists" id="playList">
+        </div>
+    </div>
+    <button class="r-sidebar-toggle" onclick="toggleSidebar()">☰</button>
+</aside>
+
+<div class="a-header">
+    <img class="a-img" th:src="${artist.ArtistProfileName}" th:alt="${artist.ArtistName}" width="100" height="100" >
+
+    <div class="a-header-content">
+        <h1>[[${artist.ArtistName}]] </h1>
+        <p>데뷔일:[[${artist.ArtistDate}]] </p>
+        <p>소속사:[[${artist.ArtistAgency}]]</p>
+        <div class="a-playlist-info">
+            <span style="color:#FFFFFF">[[${artist.ArtistType}]]</span>
+        </div>
+    </div>
+</div>
+<section class="a-top-section">
+    <div>
+        <div id="test"></div>
+    </div>
+</section>
+
+<!-- 모달창 : 사용자가 플레이한 노래 목록이 표시될 공간 -->
+<div class="modal1">
+    <button id="modal_close"><img src="/img/x.png" width="10" height="10"></button>
+    <div class="modal_form">
+        <div class="modal_title">♪ Recently Played ♪</div>
+        <div class="modal_body">
+            <!-- 여기에 사용자가 플레이한 노래 목록을 삽입할 예정 -->
+            <div id="listening-history"></div>
+        </div>
+        <button id="clear-history-btn">전체 삭제</button>
+    </div>
+</div>
+
+
+<!-- 모달 1: 곡 정보 -->
+<div id="modal-music" class="modal">
+    <span class="modal-close">X</span>
+    <div class="modal-content">
+        <img class="album-cover" src="" width="60"/>
+        <h4 class="m-title"></h4>
+        <div class="artist-name"></div>
+        <div class="music-album"></div>
+        <div class="music-releaseDate"></div>
+        <div class="music-genre"></div>
+        <div class="music-like"></div>
+    </div>
+</div>
+
+<!-- 모달 2: 아티스트 정보 -->
+<div id="modal-artist" class="modal">
+    <span class="modal-close">X</span>
+    <div class="modal-content">
+        <img class="artist-img" src="" width="60"/>
+        <div class="artist-name"></div>
+        <div class="artist-date"></div>
+        <div class="artist-agency"></div>
+        <div class="artist-type"></div>
+    </div>
+</div>
+
+
+<div class="modal-overlay"></div>
+
+<!-- 푸터 -->
+<div th:replace="~{footer.html}"></div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+<script src="/js/header.js"></script>
+<script src="/js/footer.js"></script>
+<script src="/js/sidebar.js"></script>
+<script src="/js/PlayList.js"></script>
+<script src="/js/musicPlay.js"></script>
+<script src="/js/modal_ygm.js"></script>
+<script src="/js/mlist.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const artistId = parseInt(urlParams.get('artistId'));
+        console.log(artistId); // "139"
+
+        if (artistId) {
+            $.ajax({
+                type: "POST",
+                url: "/artistTop",
+                data: {
+                    artistId: artistId
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    musicList(result);
+                },
+                error: function (e) {
+                    console.log("리스트 가져오기 실패", e);
+                    alert('리스트 가져오기 실패');
+                }
+            });
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function getHeaderColor(artistId) {
+            const colors = [
+                "rgba(255, 182, 193, 0.8)", // 핑크
+                "rgba(255, 255, 224, 0.8)", // 연한 노랑
+                "rgba(240, 230, 140, 0.8)", // 올리브
+                "rgba(173, 216, 230, 0.8)", // 연한 하늘색
+                "rgba(144, 238, 144, 0.8)", // 연두
+                "rgba(255, 239, 213, 0.8)", // 연한 복숭아
+                "rgba(255, 228, 196, 0.8)", // 연한 베이지
+                "rgba(255, 218, 185, 0.8)", // 연한 장미
+                "rgba(255, 160, 122, 0.8)", // 살구
+                "rgba(32, 178, 170, 0.8)", // 다크 터쿼이즈
+                "rgba(135, 206, 235, 0.8)", // 하늘색
+                "rgba(173, 255, 47, 0.8)", // 연한 라임
+                "rgba(224, 255, 255, 0.8)", // 연한 민트
+                "rgba(250, 235, 215, 0.8)", // 연한 복숭아
+                "rgba(255, 250, 205, 0.8)", // 레몬
+                "rgba(255, 245, 238, 0.8)", // 연한 분홍
+                "rgba(220, 220, 220, 0.8)", // 회색
+                "rgba(240, 248, 255, 0.8)", // 아이스 블루
+                "rgba(255, 228, 181, 0.8)", // 연한 살구
+                "rgba(255, 240, 245, 0.8)", // 연한 핑크
+                // 추가된 색상
+                "rgba(255, 192, 203, 0.8)", // 핑크
+                "rgba(255, 105, 180, 0.8)", // 핫핑크
+                "rgba(255, 160, 122, 0.8)", // 살구
+                "rgba(255, 218, 185, 0.8)", // 연한 복숭아
+                "rgba(255, 228, 225, 0.8)", // 연한 장미
+                "rgba(240, 128, 128, 0.8)", // 연한 빨강
+                "rgba(255, 228, 196, 0.8)", // 베이지
+                "rgba(255, 239, 196, 0.8)", // 연한 노랑
+                "rgba(255, 250, 205, 0.8)", // 레몬
+                "rgba(173, 216, 230, 0.8)", // 연한 하늘색
+                "rgba(135, 206, 250, 0.8)", // 하늘색
+                "rgba(240, 255, 240, 0.8)", // 연한 초록
+                "rgba(144, 238, 144, 0.8)", // 연두
+                "rgba(255, 228, 181, 0.8)", // 연한 살구
+                "rgba(255, 240, 245, 0.8)", // 연한 분홍
+                "rgba(240, 230, 140, 0.8)", // 연한 올리브
+                "rgba(255, 250, 240, 0.8)", // 연한 크림
+                "rgba(224, 255, 255, 0.8)", // 연한 민트
+                "rgba(240, 248, 255, 0.8)", // 연한 아이스블루
+                "rgba(255, 218, 185, 0.8)", // 연한 복숭아
+                "rgba(255, 160, 122, 0.8)", // 연한 오렌지
+                "rgba(255, 99, 71, 0.8)", // 토마토
+                "rgba(255, 140, 0, 0.8)", // 주황
+                "rgba(255, 215, 0, 0.8)", // 금색
+                "rgba(255, 228, 196, 0.8)", // 연한 베이지
+                "rgba(240, 230, 140, 0.8)", // 연한 카키
+                "rgba(173, 255, 47, 0.8)", // 연한 라임
+            ];
+            const index = artistId % colors.length;
+            return colors[index];
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const artistId = urlParams.get('artistId');
+        if (artistId) {
+            const headerColor = getHeaderColor(artistId);
+            document.querySelector('.a-header').style.backgroundColor = headerColor;
+        }
+    });
+</script>
+
+</html>

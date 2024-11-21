@@ -1,0 +1,221 @@
+/* 기본 폰트 스타일 */
+body {
+    height: 100%; /* 화면 높이를 100%로 설정 */
+    padding: 0;
+    font-size: 20px;
+
+    font-family: Arial, sans-serif; /* 폰트 패밀리 설정 */
+    background-color: rgba(0, 0, 0, 0.88);
+}
+
+/* 헤더 스타일 */
+header {
+    position: fixed; /* 헤더를 고정 위치로 설정 */
+    top: 0; /* 상단에 위치 */
+    left: 0; /* 왼쪽에 위치 */
+    right: 0; /* 오른쪽에 위치 */
+    background-color: #1a1a1a; /* 헤더 배경색 설정 */
+    color: #f1f1f1; /* 헤더 텍스트 색상 설정 */
+    padding: 20px 50px; /* 위아래 패딩 20px, 좌우 패딩 50px */
+    display: flex; /* 플렉스 박스 레이아웃 사용 */
+    align-items: center; /* 수직 중앙 정렬 */
+    z-index: 1000; /* 다른 요소 위에 표시되도록 설정 */
+    height: 80px; /* 헤더 높이 80px으로 설정 */
+    font-size: 20px; /* 폰트 크기 설정 */
+}
+
+/* 홈 로고 및 내정보 보기 스타일 */
+#mview {
+    height: 30px; /* 아이디와 뷰 높이 90px으로 설정 */
+    cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+}
+
+/* 메뉴 스타일 */
+.menu1 {
+    list-style: none; /* 리스트 스타일 제거 */
+    margin: 0 auto; /* 기본 마진 제거 */
+    padding: 0; /* 기본 패딩 제거 */
+    display: flex; /* 플렉스 박스 레이아웃 사용 */
+    gap: 15px; /* 메뉴 아이템 간의 간격 설정 */
+    align-items: center; /* 메뉴 아이템을 수직 중앙 정렬 */
+}
+
+/* 검색창을 가운데에 배치하기 위한 스타일 */
+.search-container {
+    display: flex; /* 플렉스 박스 레이아웃 사용 */
+    align-items: center; /* 수직 중앙 정렬 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    flex-grow: 1; /* 남은 공간을 차지 */
+}
+
+.search-container select,
+.search-container input,
+.search-container button {
+    gap: 0 5px; /* 요소 간의 간격 설정 */
+    margin: 0 auto;
+    height: 50px; /* 입력 요소의 높이를 50px으로 설정 */
+    font-size: 16px; /* 폰트 크기를 20px로 설정 */
+    background-color: #333; /* 배경색 설정 */
+    color: #f1f1f1; /* 텍스트 색상 설정 */
+    border: 1px solid #444; /* 테두리 색상 설정 */
+    font-weight: 600; /* 폰트를 두껍게 설정 */
+}
+
+/* 링크 스타일 */
+.menu1 li a {
+    color: #f1f1f1; /* 링크 텍스트 색상 설정 */
+    text-decoration: none; /* 링크의 기본 밑줄 제거 */
+    padding: 10px 15px; /* 링크의 패딩 설정 */
+    font-size: 15px; /* 폰트 크기를 20px로 설정 */
+    font-weight: 600; /* 폰트를 두껍게 설정 */
+}
+
+.menu1 li a:hover {
+    background-color: #575757; /* 마우스 오버 시 배경색 변경 */
+    border-radius: 5px; /* 살짝 둥근 모서리 */
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    header {
+        padding: 20px; /* 패딩 줄이기 */
+        flex-direction: column; /* 수직 정렬 */
+    }
+
+    .search-container {
+        flex-direction: column; /* 검색창 요소 수직 정렬 */
+    }
+}
+
+/* 접근성 향상 */
+.menu1 li a:focus {
+    outline: 2px solid #f1f1f1; /* 포커스 시 테두리 추가 */
+}
+
+#keyword {
+    width: 70%; /* 검색창 너비 */
+}
+
+/*!* 모달 애니메이션 *!*/
+.modal {
+    transition: opacity 0.3s ease; /* 부드러운 전환 효과 */
+    display: flex; /* Flexbox 사용 */
+    flex-direction: column; /* 세로 방향으로 정렬 */
+    justify-content: flex-start; /* 상단 정렬 */
+    align-items: center; /* 수평 중앙 정렬 */
+    position: fixed; /* 화면에 고정 */
+    top: 50%; /* 화면의 중앙에 위치 */
+    left: 0; /* 화면의 왼쪽에 위치 */
+    transform: translateY(-50%); /* 수직 방향으로 중앙 정렬 */
+    width: 50%; /* 모달 너비를 화면의 65%로 설정 */
+    height: 50vh; /* 모달 높이를 화면 높이의 70%로 고정 */
+    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 가능 */
+    background-color: rgba(18, 18, 18, 0.95); /* 반투명 다크 배경 */
+    z-index: 1000; /* 다른 요소 위에 표시 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* 그림자 효과 */
+    margin-top: 20px;
+    margin-left: 10px; /* 화면 가장자리에서 약간의 여백 추가 */
+}
+
+#index {
+    left: 50px;
+
+}
+
+button {
+    margin: 0 10px;
+}
+#myModal {
+    color: #f1f1f1; /* 폰트 색상을 밝게 설정 */
+    text-align: center;
+    margin-left: 150px;
+    padding: 0;
+}
+
+/* 테이블 스타일 */
+.modal table {
+    width: 100%; /* 테이블 너비를 100%로 설정 */
+    border-collapse: collapse; /* 테두리 겹침 제거 */
+    margin-top: 20px; /* 테이블 위쪽 여백 */
+}
+
+.modal td {
+    padding: 12px; /* 셀 안쪽 여백 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+    border-bottom: 1px solid #444; /* 하단 테두리 추가 */
+    color: #f1f1f1; /* 텍스트 색상 설정 */
+    font-weight: 600; /* 폰트를 두껍게 설정 */
+}
+
+#close {
+    cursor: pointer; /* 커서 포인터로 변경 */
+    transition: transform 0.2s; /* 부드러운 변환 효과 */
+    filter: invert(1); /* 이미지 색상 반전 (다크모드에 적합) */
+}
+
+#close:hover {
+    transform: scale(1.1); /* 마우스 오버 시 크기 증가 */
+}
+
+#searchBtn {
+    background-color: #444; /* 다크 배경색 */
+    color: #f1f1f1; /* 텍스트 색상 */
+    border: 1px solid #555; /* 테두리 색상 */
+    padding: 10px 15px; /* 내부 패딩 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    cursor: pointer; /* 커서 포인터 */
+    transition: background-color 0.3s, color 0.3s; /* 부드러운 전환 효과 */
+    font-size: 20px; /* 폰트 크기 설정 */
+    font-weight: 600; /* 폰트를 두껍게 설정 */
+}
+
+#buttons {
+    display: flex; /* 플렉스박스로 버튼들을 한 줄로 나열 */
+    justify-content: flex-start; /* 버튼들을 왼쪽에 정렬 */
+    flex-wrap: nowrap; /* 버튼들이 한 줄에 고정되게 설정 */
+    height: 50px;
+}
+
+#freeBtn,#artistRecommendBtn,#playlistRecommendBtn,#BHitBtn,#trendingBtn {
+    background-color: #444; /* 다크 배경색 */
+    color: #f1f1f1; /* 텍스트 색상 */
+    border: 1px solid #555; /* 테두리 색상 */
+    padding: 10px; /* 내부 패딩 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    cursor: pointer; /* 커서 포인터 */
+    transition: background-color 0.3s, color 0.3s; /* 부드러운 전환 효과 */
+    font-size: 16px;
+    width: 185px;
+}
+
+#searchBtn {
+    width: 100px;
+    height: 50px;
+}
+
+#searchBtn:hover {
+    background-color: #575757; /* 호버 시 배경색 변경 */
+}
+
+/* 링크 기본 스타일 */
+a {
+    color: #ffffff; /* 흰색 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+/* 링크 방문 후 스타일 */
+a:visited {
+    color: #ffffff; /* 흰색 */
+}
+
+/* 링크 마우스 오버 시 스타일 */
+a:hover {
+    color: #d3d3d3; /* 연한 흰색 */
+    text-decoration: underline; /* 밑줄 추가 */
+}
+
+/* 링크 클릭 시 스타일 */
+a:active {
+    color: #f5f5f5; /* 밝은 흰색 */
+}

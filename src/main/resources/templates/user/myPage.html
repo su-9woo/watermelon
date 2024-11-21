@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="/css/myPage.css">
+  <link rel="stylesheet" type="text/css" href="/css/header.css"/>
+  <link rel="stylesheet" type="text/css" href="/css/content.css"/>
+  <link rel="stylesheet" type="text/css" href="/css/footer.css"/>
+  <link rel="stylesheet" type="text/css" href="/css/chart.css"/>
+  <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+
+  <title>My Page</title>
+</head>
+
+<body>
+<div th:replace="~{header.html}"></div>
+<br/><br/><br/><br/>
+
+<!-- Main content for My Page -->
+<div class="container" id="tabBtns">
+  <!-- My Page tab -->
+  <button class="tablinks" id="myPageTab">My Page</button>
+
+  <!-- My Info tab -->
+  <button class="tablinks" id="myInfoTab">My Info</button>
+</div>
+
+<!-- My Playlists / My Boards / My Profile -->
+<div class="wrap">
+  <div class="container" id="myPage">
+    <div class="container" id="playlists">
+      <h3> My Playlists </h3>
+      <div class="container" id="myPlaylists">  <!-- 여기가 플레이리스트 나올 공간 -->
+
+
+      </div>
+    </div>
+
+    <!-- Board Entries -->
+    <div class="container" id="myBoard">
+      <h3> My Boards </h3>
+      <div class="container" id="myBoardEntries"> <!-- 여기가 게시판 작성한 내용 -->
+
+      </div>
+    </div>
+
+    <!-- My Comments -->
+    <div class="container" id="myComments">
+      <h3> My Comments </h3>
+      <div class="container" id="myCommentEntries"> <!-- myComment 공간 -->
+
+      </div>
+    </div>
+
+    <!-- Profile Image and User ID -->
+    <div class="container">
+      <div class="container" id="myProfile">
+        <h3> My Profile </h3>
+        <img id="userProfileImage" th:src="@{|/profile/${view.UserProfileName}|}" alt="Profile Picture"/>
+        <input type="hidden" id="userId2" name="UserId" th:value="${view.UserId}"/>
+        <div id="userId1">[[${view.UserId}]]</div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Detailed Information Form (My Info) -->
+<div class="wrap">
+  <div class="container" id="myInfo">
+    <form action="/uModify" method="POST" name="modInfo" enctype="multipart/form-data">
+      <h2>My Info</h2>
+      <table>
+        <caption>회원상세보기</caption>
+        <tr class="currentProfile">
+          <th>프로필 사진</th>
+          <td>
+            <img th:src="@{|/profile/${view.UserProfileName}|}"/><br/>
+          </td>
+        </tr>
+        <tr class="modifyBtn">
+          <th>프로필 사진</th>
+          <td>
+            <br/><img id="preImage" th:src="@{|/profile/${view.UserProfileName}|}"/>
+            <input type="file" id="userProfile" name="UserProfile"/>
+          </td>
+        </tr>
+        <tr>
+          <th>아이디</th>
+          <td>
+            <input type="hidden" id="userId" name="UserId" th:value="${view.UserId}"/>
+            [[${view.UserId}]]
+            <br>
+            <input type="button" class="modifyBtn" id="modPassId" value="아이디 및 비밀번호 관리"/>
+          </td>
+        </tr>
+        <tr class="currentProfile">
+          <th>이름</th>
+          <td>[[${view.UserName}]]</td>
+        </tr>
+        <tr class="currentProfile">
+          <th>생년월일</th>
+          <td>[[${view.UserBirth}]]</td>
+        </tr>
+        <tr class="currentProfile">
+          <th>성별</th>
+          <td>[[${view.UserGender}]]</td>
+        </tr>
+        <tr>
+          <th>이메일</th>
+          <td id="emailChange">
+            <!--<input type="hidden" id="currentEmail" name="currentEmail" th:value="${view.UserEmail}" />-->
+            <input type="email" id="userEmail" name="UserEmail" th:placeholder="${view.UserEmail}"
+                   th:disabled="true" style="border:transparent"/>
+            <input type="button" class="modifyBtn" id="modifyEmail" value="이메일 변경"/>
+            <span id="check4">
+                            <input type="button" value="인증번호 발송" id="checkEmail"/>
+                        </span>
+          </td>
+        </tr>
+        <tr class="modifyBtn">
+          <th>연락처</th>
+          <td id="phoneChange">
+            <!--<input type="hidden" id="currentPhone" name="currentPhone" th:value="${view.UserPhone}" />-->
+            <input type="text" id="userPhone" name="UserPhone" th:placeholder="${view.UserPhone}"
+                   th:disabled="true" style="border:transparent"/>
+            <input type="button" class="modifyBtn" id="modifyPhone" value="연락처 변경"/>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <input type="button" id="modify" value="정보 수정"/>
+            <input type="submit" class="modifyBtn" value="변경사항 저장"/>
+            <input type="button" class="modifyBtn" id="cancel" value="취소"/>
+            <input type="button" class="modifyBtn" id="delete" value="회원탈퇴"/>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+
+<!-- 푸터 -->
+</br>
+</br>
+</br>
+</br>
+</br>
+<div th:replace="~{footer.html}"></div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+
+<script>
+
+  $(document).ready(() => {
+    console.log('app.js ready');
+    console.log('[[${session.loginId}]]');
+    $.ajax({
+      type: "POST",
+      url: `/myPlaylistInfo/[[${session.loginId}]]`,
+      datatype: "json",
+      success: function (list) {
+        console.log(list);
+        myPlayLists(list);
+      },
+      error: function (e) {
+        alert('My Page 내 플레이리스트 가져오기 실패')
+      }
+    });
+
+    $.ajax({
+      type: "POST",
+      url: `/myBoardInfo/[[${session.loginId}]]`,
+      datatype: "json",
+      success: function (list) {
+        console.log(list);
+        myBoardEntries(list);
+      },
+      error: function (e) {
+        alert('내 게시글 가져오기 실패')
+      }
+    });
+
+    $.ajax({
+      type: "POST",
+      url: `/myCommentInfo/[[${session.loginId}]]`,
+      datatype: "json",
+      success: function (list) {
+        console.log(list);
+        myCommentEntries(list);
+      },
+      error: function (e) {
+        alert('내 댓글 가져오기 실패')
+      }
+    });
+
+  });
+
+  $('#modPassId').click(() => {
+    location.href = `/uModLogin?UserId=[[${session.loginId}]]`;
+  });
+
+  $('#delete').click(() => {
+    if (confirm('정말 삭제하시겠습니까?')) {
+      location.href = `/uDelete?UserId=[[${session.loginId}]]&UserProfileName=[[${view.UserProfileName}]]`;
+    }
+  });
+
+  function checkPhone() {
+    let phone = $('#userPhone').val();
+    let regex = /^\d{3}-\d{3,4}-\d{4}$/;
+
+    if (regex.test(phone)) {
+      alert('전화번호가 정상적으로 입력되었습니다');
+      userPhone.attr('readonly', true);
+      modifyPhone.hide();
+    } else {
+      alert('전화번호 형식이 올바르지 않습니다.');
+    }
+  }
+</script>
+<script src="/js/header.js"></script>
+<script src="/js/musicPlay.js"></script>
+<script src="/js/modal_ygm.js"></script>
+<script src="/js/myPage.js"></script>
+</html>
